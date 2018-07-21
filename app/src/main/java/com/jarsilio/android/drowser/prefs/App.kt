@@ -1,4 +1,4 @@
-package com.jarsilio.android.drowser
+package com.jarsilio.android.drowser.prefs
 
 import android.app.Application
 import android.os.Build
