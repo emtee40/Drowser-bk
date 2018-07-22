@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import com.jarsilio.android.drowser.R
 import com.jarsilio.android.drowser.models.AppListType
 import com.jarsilio.android.drowser.fragments.AppListFragment
 
@@ -25,9 +26,13 @@ class PageAdapter(fm: FragmentManager, private val context: Context) : FragmentP
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        // return null to show no title.
-        return null
+        return when (position) {
+            0 -> context.getString(R.string.title_tab_will_drowse_apps)
+            1 -> context.getString(R.string.title_tab_user_apps)
+            2 -> context.getString(R.string.title_tab_system_apps)
+            3 -> context.getString(R.string.title_tab_all_apps)
+            else -> context.getString(R.string.title_tab_all_apps)
+        }
     }
-
 }
 

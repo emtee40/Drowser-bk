@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Drowser</string>
     <string name="title_activity_main">MainActivity</string>
+
+    <!-- Tab titles -->
+    <string name="title_tab_will_drowse_apps">Drowse</string>
+    <string name="title_tab_user_apps">User</string>
+    <string name="title_tab_system_apps">System</string>
+    <string name="title_tab_all_apps">All</string>
 </resources>
