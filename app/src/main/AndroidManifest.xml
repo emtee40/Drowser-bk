@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jarsilio.android.drowser">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name=".prefs.App"
         android:allowBackup="true"
@@ -23,5 +25,18 @@
             android:name=".services.DrowserService"
             android:enabled="true"
             android:exported="false" />
+
+        <receiver
+            android:name=".services.AutoStart"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 </manifest>
