@@ -177,8 +177,8 @@ class DrowseCandidatesManager(context: Context) {
 
     fun removeDrowseCandidate(packageName: String) {
         Timber.d("Removing drowse candidate '$packageName'. It will be not be force-stopped the next time the screen is turned off. You will have to start it manually again if it has already been force-stopped")
-        if (prefs.drowseCandidates.contains("$packageName;")) {
-            prefs.drowseCandidates = prefs.drowseCandidates.replace("$packageName;", "")
+        if (isDrowseCandidate(packageName)) {
+            prefs.drowseCandidates = prefs.drowseCandidates.replace(Regex("$packageName;?"), "")
         }
     }
 
