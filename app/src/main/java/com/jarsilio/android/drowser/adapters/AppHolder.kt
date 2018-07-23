@@ -25,7 +25,12 @@ class AppHolder(view: View) : RecyclerView.ViewHolder(view) {
         // Adding click listener on CardView to open clicked application directly from here .
         cardView.setOnClickListener {
             Timber.d("Clicked on ${app.packageName}.")
-            DrowseCandidatesManager(passthroughContext).addDrowseCandidate(app.packageName)
+            val dm = DrowseCandidatesManager(passthroughContext)
+            if (dm.isDrowseCandidate(app.packageName)) {
+                dm.removeDrowseCandidate(app.packageName)
+            } else {
+                dm.addDrowseCandidate(app.packageName)
+            }
         }
 
     }
