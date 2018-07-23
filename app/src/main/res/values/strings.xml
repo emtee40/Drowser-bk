@@ -7,4 +7,7 @@
     <string name="title_tab_user_apps">User</string>
     <string name="title_tab_system_apps">System</string>
     <string name="title_tab_all_apps">All</string>
+
+    <string name="toast_add_drowse">Added %s to list.\n\nWill drowse the app as soon as the screen turns off.</string>
+    <string name="toast_remove_drowse">Removed %s from list.\n\nYou might need to open the app manually again for it to start working normally again.</string>
 </resources>
