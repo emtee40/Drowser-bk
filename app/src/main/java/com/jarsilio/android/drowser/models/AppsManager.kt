@@ -164,10 +164,9 @@ class DrowseCandidatesManager(context: Context) {
         get() = prefs.drowseCandidates.split(";")
 
     fun addDrowseCandidate(packageName: String) {
-        val pref: String = prefs.drowseCandidates
-        if (!pref.matches(Regex(".*$packageName(;.+|\$)"))) {
+        if (!isDrowseCandidate(packageName)) {
             Timber.v("Adding '$packageName' to drowse candidate list. It will be force-stopped the next time the screen is turned off")
-            if (pref != "") {
+            if (prefs.drowseCandidates != "") {
                 prefs.drowseCandidates += ";"
             }
             prefs.drowseCandidates += "$packageName"
@@ -185,5 +184,10 @@ class DrowseCandidatesManager(context: Context) {
 
     fun clearDrowseCandidates() {
         prefs.drowseCandidates = ""
+    }
+
+    fun isDrowseCandidate(packageName: String): Boolean {
+        val pref = prefs.drowseCandidates
+        return pref.matches(Regex("(.+;|^)$packageName(;.+|\$)"))
     }
 }
