@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         val tabLayout = findViewById<View>(R.id.tabs) as TabLayout
         tabLayout.setupWithViewPager(mViewPager)
 
-        startService()
+        DrowserService.startService(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -71,15 +71,5 @@ class MainActivity : AppCompatActivity() {
                 .withEmailSection("juam+drowser@posteo.net")
                 .withAutoGoogleOrFDroidSection()
         privacyPolicyBuilder.start(this)
-    }
-
-    private fun startService() {
-        if (prefs!!.isEnabled) {
-            Timber.i("Starting Drowser Service")
-            startService(Intent(this, DrowserService::class.java))
-        } else {
-            Timber.i("Stopping Drowser Service")
-            stopService(Intent(this, DrowserService::class.java))
-        }
     }
 }
