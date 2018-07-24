@@ -6,6 +6,8 @@ import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.jarsilio.android.drowser.adapters.PageAdapter
 import com.jarsilio.android.drowser.prefs.Prefs
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
-
+        getSupportActionBar()?.setHomeButtonEnabled(true); // so that
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = PageAdapter(supportFragmentManager, this)
@@ -43,6 +45,21 @@ class MainActivity : AppCompatActivity() {
         tabLayout.setupWithViewPager(mViewPager)
 
         startService()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_ellipsys, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            // R.id.menu_item_settings -> removeDeviceAdminPermission()
+            // R.id.menu_item_privacy_policy -> showPrivacyPolicyActivity()
+            // R.id.menu_item_licenses -> showAboutLicensesActivity()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun startService() {
