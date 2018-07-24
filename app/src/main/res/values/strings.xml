@@ -10,4 +10,12 @@
 
     <string name="toast_add_drowse">Added %s to list.\n\nWill drowse the app as soon as the screen turns off.</string>
     <string name="toast_remove_drowse">Removed %s from list.\n\nYou might need to open the app manually again for it to start working normally again.</string>
+
+    <!-- Prefs -->
+    <string name="prefs_category_service">Service</string>
+    <string name="pref_enable">Enabled</string>
+
+    <string name="prefs_category_notification">Notifications</string>
+    <string name="pref_show_notification">Show notification</string>
+    <string name="pref_show_notification_summary">Show a persistent notification to manage Drowse and to make sure it stays alive.</string>
 </resources>

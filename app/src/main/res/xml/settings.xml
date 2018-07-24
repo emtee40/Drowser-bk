@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceCategory
+    android:key="prefs_category_service"
+    android:title="@string/prefs_category_service">
+    <SwitchPreference
+        android:key="pref_enable"
+        android:title="@string/pref_enable"
+        android:defaultValue="true" />
+</PreferenceCategory>
+<PreferenceCategory
+    android:key="prefs_category_drowse"
+    android:title="@string/prefs_category_notification"
+    android:dependency="pref_enable">
+    <CheckBoxPreference
+        android:key="pref_show_notification"
+        android:title="@string/pref_show_notification"
+        android:summary="@string/pref_show_notification_summary"
+        android:defaultValue="true" />
+</PreferenceCategory>
+</PreferenceScreen>
