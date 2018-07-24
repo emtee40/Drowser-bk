@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            // R.id.menu_item_settings -> removeDeviceAdminPermission()
+            R.id.menu_item_settings -> startActivity(Intent(this, PreferencesActivity::class.java))
             R.id.menu_item_privacy_policy -> showPrivacyPolicyActivity()
             // R.id.menu_item_licenses -> showAboutLicensesActivity()
         }

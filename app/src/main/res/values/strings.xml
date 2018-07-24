@@ -23,4 +23,9 @@
     <string name="menu_item_settings">Settings</string>
     <string name="menu_item_privacy_policy">Privacy Policy</string>
     <string name="menu_item_licenses">Licenses</string>
+
+    <!-- pref id's -->
+    <string name="pref_enabled_key">pref_enabled</string>
+    <string name="pref_drowse_candidates_key">pref_drowse_candidates_key</string>
+    <string name="pref_notification_key">prefs_category_notification_key</string>
 </resources>

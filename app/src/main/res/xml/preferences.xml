@@ -4,16 +4,16 @@
     android:key="prefs_category_service"
     android:title="@string/prefs_category_service">
     <SwitchPreference
-        android:key="pref_enable"
+        android:key="@string/pref_enabled_key"
         android:title="@string/pref_enable"
         android:defaultValue="true" />
 </PreferenceCategory>
 <PreferenceCategory
-    android:key="prefs_category_drowse"
+    android:key="prefs_category_notification"
     android:title="@string/prefs_category_notification"
-    android:dependency="pref_enable">
+    android:dependency="@string/pref_enabled_key">
     <CheckBoxPreference
-        android:key="pref_show_notification"
+        android:key="@string/pref_notification_key"
         android:title="@string/pref_show_notification"
         android:summary="@string/pref_show_notification_summary"
         android:defaultValue="true" />
