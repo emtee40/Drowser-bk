@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':privacypolicy'
+project(':privacypolicy').projectDir = new File('privacy-policy-lib/privacypolicy')
