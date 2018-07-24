@@ -12,6 +12,7 @@ import android.view.View
 import com.jarsilio.android.drowser.adapters.PageAdapter
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
+import com.jarsilio.android.privacypolicy.PrivacyPolicyBuilder
 import timber.log.Timber
 
 
@@ -55,11 +56,21 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             // R.id.menu_item_settings -> removeDeviceAdminPermission()
-            // R.id.menu_item_privacy_policy -> showPrivacyPolicyActivity()
+            R.id.menu_item_privacy_policy -> showPrivacyPolicyActivity()
             // R.id.menu_item_licenses -> showAboutLicensesActivity()
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showPrivacyPolicyActivity() {
+        val privacyPolicyBuilder = PrivacyPolicyBuilder()
+                .withIntro(getString(R.string.app_name), "Juan García Basilio (juanitobananas)")
+                .withUrl("https://gitlab.com/juanitobananas/drowser/blob/master/PRIVACY.md#drowser-privacy-policy")
+                .withMeSection()
+                .withEmailSection("juam+drowser@posteo.net")
+                .withAutoGoogleOrFDroidSection()
+        privacyPolicyBuilder.start(this)
     }
 
     private fun startService() {
