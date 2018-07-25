@@ -81,6 +81,8 @@ class DrowserService : Service() {
     companion object {
         private const val FOREGROUND_ID = 10001
 
+        const val BATTERY_OPTIMIZATION_REQUEST_CODE = 20002
+
         fun startService(context: Context) {
             val prefs = Prefs(context)
             if (prefs.isEnabled) {
