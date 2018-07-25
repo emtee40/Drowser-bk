@@ -13,6 +13,9 @@ import com.jarsilio.android.drowser.adapters.PageAdapter
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
 import com.jarsilio.android.privacypolicy.PrivacyPolicyBuilder
+import com.mikepenz.aboutlibraries.Libs
+import com.mikepenz.aboutlibraries.LibsBuilder
+import kotlinx.android.synthetic.main.card_app_item.*
 import timber.log.Timber
 
 
@@ -57,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_item_settings -> startActivity(Intent(this, PreferencesActivity::class.java))
             R.id.menu_item_privacy_policy -> showPrivacyPolicyActivity()
-            // R.id.menu_item_licenses -> showAboutLicensesActivity()
+            R.id.menu_item_licenses -> showAboutLicensesActivity()
         }
 
         return super.onOptionsItemSelected(item)
@@ -71,5 +74,15 @@ class MainActivity : AppCompatActivity() {
                 .withEmailSection("juam+drowser@posteo.net")
                 .withAutoGoogleOrFDroidSection()
         privacyPolicyBuilder.start(this)
+    }
+
+    private fun showAboutLicensesActivity() {
+        LibsBuilder()
+                .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                .withAboutIconShown(true)
+                .withAboutVersionShown(true)
+                .withActivityTitle(getString(R.string.menu_item_licenses))
+                .withAboutDescription(getString(R.string.licenses_about_libraries_text, getString(R.string.app_name)))
+                .start(applicationContext)
     }
 }
