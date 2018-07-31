@@ -19,13 +19,17 @@
     <string name="pref_show_notification">Show notification</string>
     <string name="pref_show_notification_summary">Show a persistent notification to manage Drowse and to make sure it stays alive.</string>
 
-    <!-- Bubble menu -->
+    <!-- Menu -->
+    <string name="menu_button_add">Add</string>
     <string name="menu_item_settings">Settings</string>
     <string name="menu_item_privacy_policy">Privacy Policy</string>
     <string name="menu_item_licenses">Licenses</string>
 
     <!-- Licenses Activity -->
     <string name="licenses_about_libraries_text" translatable="false"><![CDATA[<br/><b>%s License</b><br/><br/>Copyright (c) 2016-2018 Juan García Basilio<br/><br/>This app is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.<br/><br/>This app is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the <a href="http://www.gnu.org/licenses/">GNU General Public License</a> for more details.<br/><br/><b>Third-party libraries</b><br/><br/>Here is a list of the libraries used by this app. Tap on them for more information.]]></string>
+
+    <!-- Add activity -->
+    <string name="title_activity_add">Add apps</string>
 
     <!-- pref id's -->
     <string name="pref_enabled_key">pref_enabled</string>
