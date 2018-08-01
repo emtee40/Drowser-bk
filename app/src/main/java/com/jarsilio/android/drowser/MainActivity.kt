@@ -2,6 +2,7 @@ package com.jarsilio.android.drowser
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -18,12 +19,13 @@ import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.LibsBuilder
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var prefs: Prefs
     private lateinit var appsManager: AppsManager
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
+    private lateinit var swipeLayout: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         prefs = Prefs(this)
@@ -34,15 +36,24 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
-        getSupportActionBar()?.setHomeButtonEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
 
-        recyclerView = findViewById<RecyclerView>(R.id.recycler_view) as RecyclerView
-
+        recyclerView = findViewById(R.id.recycler_view)
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = AppAdapter(appsManager.getDrowseCandidates())
 
+        swipeLayout = findViewById(R.id.swipe_container)
+        swipeLayout.setOnRefreshListener(this)
+
         DrowserService.startService(this)
+
+        onRefresh()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        onRefresh()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -59,6 +70,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onRefresh() {
+        recyclerView.adapter = AppAdapter(appsManager.getDrowseCandidates())
+        swipeLayout.setRefreshing(false)
     }
 
     private fun showPrivacyPolicyActivity() {
