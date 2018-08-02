@@ -11,7 +11,6 @@ import com.jarsilio.android.drowser.adapters.AppAdapter
 import com.jarsilio.android.drowser.models.AppsManager
 import com.jarsilio.android.drowser.prefs.Prefs
 
-
 class AddActivity : AppCompatActivity() {
     private lateinit var prefs: Prefs
     private lateinit var appsManager: AppsManager

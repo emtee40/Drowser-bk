@@ -18,7 +18,6 @@ import com.jarsilio.android.privacypolicy.PrivacyPolicyBuilder
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.LibsBuilder
 
-
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var prefs: Prefs
     private lateinit var appsManager: AppsManager
@@ -63,7 +62,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_button_add-> startActivity(Intent(this, AddActivity::class.java))
+            R.id.menu_button_add -> startActivity(Intent(this, AddActivity::class.java))
             R.id.menu_item_settings -> startActivity(Intent(this, PreferencesActivity::class.java))
             R.id.menu_item_privacy_policy -> showPrivacyPolicyActivity()
             R.id.menu_item_licenses -> showAboutLicensesActivity()

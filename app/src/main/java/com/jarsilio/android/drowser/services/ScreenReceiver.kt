@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.jarsilio.android.drowser.models.AppsManager
-import com.jarsilio.android.drowser.prefs.Prefs
 
 import timber.log.Timber
 

@@ -22,5 +22,4 @@ class AppAdapter(private val apps: List<AppInfo>) : RecyclerView.Adapter<AppHold
     override fun getItemCount(): Int {
         return apps.size
     }
-
 }

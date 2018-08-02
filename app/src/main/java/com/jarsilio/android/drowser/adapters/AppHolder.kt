@@ -38,6 +38,5 @@ class AppHolder(view: View) : RecyclerView.ViewHolder(view) {
                 dm.addDrowseCandidate(app.packageName)
             }
         }
-
     }
 }

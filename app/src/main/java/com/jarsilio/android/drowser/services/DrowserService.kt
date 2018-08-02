@@ -1,6 +1,9 @@
 package com.jarsilio.android.drowser.services
 
-import android.app.*
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -87,14 +90,14 @@ class DrowserService : Service() {
             val prefs = Prefs(context)
             if (prefs.isEnabled) {
                 Timber.i("Starting Drowser")
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-                        && shouldStartForegroundService(context)) {
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+                    shouldStartForegroundService(context)) {
                     context.startForegroundService(Intent(context, DrowserService::class.java))
                 } else {
                     context.startService(Intent(context, DrowserService::class.java))
                 }
             } else {
-                Timber.i("Not starting Drowser because it's disabled");
+                Timber.i("Not starting Drowser because it's disabled")
             }
         }
 
@@ -108,8 +111,7 @@ class DrowserService : Service() {
             startService(context)
         }
 
-
-        fun isIgnoringBatteryOptimizations(context: Context) : Boolean {
+        fun isIgnoringBatteryOptimizations(context: Context): Boolean {
             val isIgnoringBatteryOptimizations: Boolean
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager

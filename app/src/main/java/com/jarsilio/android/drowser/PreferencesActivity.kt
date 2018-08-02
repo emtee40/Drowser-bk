@@ -36,12 +36,12 @@ class PreferencesActivity : Activity(), SharedPreferences.OnSharedPreferenceChan
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         Timber.d("Changed preference: $key")
         when (key) {
-           prefs.IS_ENABLED -> {
-               if (prefs.isEnabled) {
-                   DrowserService.startService(this)
-               } else {
-                   DrowserService.stopService(this)
-               }
+            prefs.IS_ENABLED -> {
+                if (prefs.isEnabled) {
+                    DrowserService.startService(this)
+                } else {
+                    DrowserService.stopService(this)
+                }
             }
             prefs.SHOW_NOTIFICATION -> {
                 if (!prefs.showNotification && !DrowserService.isIgnoringBatteryOptimizations(this)) {

@@ -3,7 +3,6 @@ package com.jarsilio.android.drowser.services
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import com.jarsilio.android.drowser.prefs.Prefs
 import timber.log.Timber
 
