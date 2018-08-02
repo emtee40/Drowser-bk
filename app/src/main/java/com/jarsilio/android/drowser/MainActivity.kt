@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         recyclerView = findViewById(R.id.recycler_view)
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter = AppAdapter(appsManager.getDrowseCandidates())
 
         swipeLayout = findViewById(R.id.swipe_container)
         swipeLayout.setOnRefreshListener(this)
