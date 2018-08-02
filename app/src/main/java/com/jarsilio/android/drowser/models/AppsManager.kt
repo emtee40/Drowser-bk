@@ -9,7 +9,7 @@ import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 import com.jarsilio.android.drowser.R
 import com.jarsilio.android.drowser.prefs.Prefs
-import com.jarsilio.android.drowser.utils.Root
+import eu.chainfire.libsuperuser.Shell
 import timber.log.Timber
 
 class AppInfo(val name: String, val packageName: String, val icon: Drawable?, val isSystem: Boolean) {
@@ -28,27 +28,35 @@ class AppsManager(private val context: Context) {
 
     private val drowseCandidatesManager = DrowseCandidatesManager(context)
 
-    fun forceStopApp(packageName: String) {
-        if (packageName == "") {
-            Timber.d("Not force-stopping app with empty package name")
-        } else {
-            Timber.d("Force-stopping app: $packageName")
-            Root.execute("am force-stop $packageName")
-        }
-    }
-
     fun forceStopApps() {
+        if (!Shell.SU.available()) {
+            Timber.e("Root access not granted (or device nor rooted)")
+            return
+        }
+
         Timber.d("Prefs(context).drowseCandidates: ${Prefs(context).drowseCandidates}")
         Timber.d("drowseCandidatesManager.drowseCandidates: ${drowseCandidatesManager.drowseCandidates}")
         Timber.d("Force-stopping all candidate apps')")
-        for (app in drowseCandidatesManager.drowseCandidates) {
-            forceStopApp(app)
+        Timber.v("Preparing shell commands:')")
+        val commands: MutableList<String> = mutableListOf()
+        for (_packageName in drowseCandidatesManager.drowseCandidates) {
+            // Remove this stuff and suppose we have non-empty packageNames once we implement Room persistence
+            val packageName = _packageName.trim()
+            if (packageName != "") {
+                val command = "am force-stop $packageName"
+                commands.add(command)
+                Timber.v("-> $command")
+            }
         }
+
+        Timber.d("Running shell commands as root")
+        Shell.SU.run(commands)
+        Timber.d("Done")
     }
 
     fun getActiveServices(packageName: String): List<String> {
         val activeServices: MutableList<String> = mutableListOf<String>()
-        val dumpsysServicesOutput = Root.execute("dumpsys activity services $packageName").stdout
+        val dumpsysServicesOutput = Shell.SU.run("dumpsys activity services $packageName")
         for (line in dumpsysServicesOutput) {
             if (line.matches(SERVICE_RECORD_MATCH)) {
                 val service = line.replace(SERVICE_RECORD_MATCH, "$1")
