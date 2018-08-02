@@ -1,6 +1,7 @@
 package com.jarsilio.android.drowser
 
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -11,12 +12,13 @@ import com.jarsilio.android.drowser.adapters.AppAdapter
 import com.jarsilio.android.drowser.models.AppsManager
 import com.jarsilio.android.drowser.prefs.Prefs
 
-class AddActivity : AppCompatActivity() {
+class AddActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var prefs: Prefs
     private lateinit var appsManager: AppsManager
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
+    private lateinit var swipeLayout: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         prefs = Prefs(this)
@@ -34,7 +36,21 @@ class AddActivity : AppCompatActivity() {
 
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
+
+        swipeLayout = findViewById(R.id.swipe_container)
+        swipeLayout.setOnRefreshListener(this)
+
+        onRefresh()
+    }
+
+    override fun onRefresh() {
         recyclerView.adapter = AppAdapter(appsManager.getUserApps())
+        swipeLayout.setRefreshing(false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        onRefresh()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
