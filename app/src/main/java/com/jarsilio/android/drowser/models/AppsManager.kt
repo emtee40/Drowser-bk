@@ -5,28 +5,12 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import android.graphics.drawable.Drawable
-import android.support.v4.content.ContextCompat
-import com.jarsilio.android.drowser.R
-import com.jarsilio.android.drowser.prefs.Prefs
 import eu.chainfire.libsuperuser.Shell
 import timber.log.Timber
 
-class AppInfo(val name: String, val packageName: String, val icon: Drawable?, val isSystem: Boolean) {
-    val lowercaseName = name.toLowerCase() // for alphabetical sorting
-}
-
-enum class AppListType {
-    DROWSE_CANDIDATES,
-    USER,
-    SYSTEM,
-    ALL
-}
-
 class AppsManager(private val context: Context) {
     private val SERVICE_RECORD_MATCH = Regex("\\s*\\* ServiceRecord\\{.+ (.+)\\}.*") // Example:  * ServiceRecord{aad95cb u0 com.whatsapp/.gcm.RegistrationIntentService}
-
-    private val drowseCandidatesManager = DrowseCandidatesManager(context)
+    private val appItemsDao = AppDatabase.getInstance(context.applicationContext).appItemsDao()
 
     fun forceStopApps() {
         if (!Shell.SU.available()) {
@@ -34,24 +18,22 @@ class AppsManager(private val context: Context) {
             return
         }
 
-        Timber.d("Prefs(context).drowseCandidates: ${Prefs(context).drowseCandidates}")
-        Timber.d("drowseCandidatesManager.drowseCandidates: ${drowseCandidatesManager.drowseCandidates}")
-        Timber.d("Force-stopping all candidate apps')")
-        Timber.v("Preparing shell commands:')")
+        Timber.d("Force-stopping all candidate apps")
         val commands: MutableList<String> = mutableListOf()
-        for (_packageName in drowseCandidatesManager.drowseCandidates) {
-            // Remove this stuff and suppose we have non-empty packageNames once we implement Room persistence
-            val packageName = _packageName.trim()
-            if (packageName != "") {
-                val command = "am force-stop $packageName"
+        val appItemsDao = AppDatabase.getInstance(context).appItemsDao()
+
+        Thread(Runnable {
+            Timber.v("Preparing shell commands:")
+            for (appItem in appItemsDao.drowseCandidates) { // in separate thread because of database access
+                val command = "am force-stop ${appItem.packageName}"
                 commands.add(command)
                 Timber.v("-> $command")
             }
-        }
-
-        Timber.d("Running shell commands as root")
-        Shell.SU.run(commands)
-        Timber.d("Done")
+            
+            Timber.d("Running shell commands as root")
+            Shell.SU.run(commands)
+            Timber.d("Done")
+        }).start()
     }
 
     fun getActiveServices(packageName: String): List<String> {
@@ -71,131 +53,36 @@ class AppsManager(private val context: Context) {
         return getActiveServices("")
     }
 
-    fun getUserApps(): List<AppInfo> {
-        val userApps: MutableList<AppInfo> = mutableListOf<AppInfo>()
-        for (app in getAllApps()) {
-            if (!app.isSystem) {
-                userApps.add(app)
+    fun initDatabase() {
+        Thread(Runnable {
+            val intent = Intent(Intent.ACTION_MAIN, null)
+            intent.addCategory(Intent.CATEGORY_LAUNCHER)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+            val resolveInfoList = context.packageManager.queryIntentActivities(intent, 0)
+            for (resolveInfo in resolveInfoList) {
+                val packageName = resolveInfo.activityInfo.applicationInfo.packageName
+                val name = getAppName(packageName)
+                val isSystem = isSystemPackage(resolveInfo)
+                val isDrowseCandidate = false
+
+                val appItem = AppItem(packageName, name, isSystem, isDrowseCandidate)
+                Timber.d("Inserting $appItem if it does not already exist")
+                appItemsDao.insertIfNotExists(appItem)
             }
-        }
-        return userApps.toList()
-    }
-
-    fun getApp(packageName: String): AppInfo? {
-        var appInfo: AppInfo? = null
-        for (app in getAllApps()) {
-            if (app.packageName == packageName) {
-                appInfo = app
-                break
-            }
-        }
-        return appInfo
-    }
-
-    fun getDrowseCandidates(): List<AppInfo> {
-        val drowseCandidatesPackageNames = DrowseCandidatesManager(context).drowseCandidates
-        val drowseCandidates: MutableList<AppInfo> = mutableListOf<AppInfo>()
-        for (app in getAllApps()) {
-            for (drowseCandidatePackageName in drowseCandidatesPackageNames) {
-                if (app.packageName == drowseCandidatePackageName) {
-                    drowseCandidates.add(app)
-                    break
-                }
-            }
-        }
-        return drowseCandidates.toList()
-    }
-
-    fun getSystemApps(): List<AppInfo> {
-        val userApps: MutableList<AppInfo> = mutableListOf<AppInfo>()
-        for (app in getAllApps()) {
-            if (app.isSystem) {
-                userApps.add(app)
-            }
-        }
-        return userApps.toList()
-    }
-
-    fun getAllApps(): List<AppInfo> {
-        val allApps: MutableList<AppInfo> = mutableListOf<AppInfo>()
-
-        val intent = Intent(Intent.ACTION_MAIN, null)
-        intent.addCategory(Intent.CATEGORY_LAUNCHER)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
-        val resolveInfoList = context.packageManager.queryIntentActivities(intent, 0)
-        for (resolveInfo in resolveInfoList) {
-            val packageName = resolveInfo.activityInfo.applicationInfo.packageName
-            val name = getAppName(packageName)
-            val icon = getAppIcon(packageName)
-            val isSystem = isSystemPackage(resolveInfo)
-
-            allApps.add(AppInfo(name, packageName, icon, isSystem))
-        }
-
-        return allApps.sortedWith(compareBy({ it.lowercaseName })).toList()
+        }).start()
     }
 
     private fun getAppName(packageName: String): String {
-        var name = ""
-        val packageManager = context.packageManager
-        try {
-            val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
-            name = packageManager.getApplicationLabel(applicationInfo) as String
+        return try {
+            val applicationInfo = context.packageManager.getApplicationInfo(packageName, 0)
+            context.packageManager.getApplicationLabel(applicationInfo) as String
         } catch (e: PackageManager.NameNotFoundException) {
             Timber.e(e)
+            "Untitled app" // TODO: Use a string from strings.xml for this
         }
-
-        return name
-    }
-
-    private fun getAppIcon(packageName: String): Drawable? {
-        var drawable: Drawable?
-        try {
-            drawable = context.packageManager.getApplicationIcon(packageName)
-        } catch (e: PackageManager.NameNotFoundException) {
-            Timber.e(e)
-            drawable = ContextCompat.getDrawable(context, R.mipmap.ic_launcher)
-        }
-
-        return drawable
     }
 
     private fun isSystemPackage(resolveInfo: ResolveInfo): Boolean {
         return resolveInfo.activityInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0
-    }
-}
-
-class DrowseCandidatesManager(context: Context) {
-    private val prefs = Prefs(context)
-
-    val drowseCandidates: List<String>
-        get() = prefs.drowseCandidates.split(";")
-
-    fun addDrowseCandidate(packageName: String) {
-        if (!isDrowseCandidate(packageName)) {
-            Timber.v("Adding '$packageName' to drowse candidate list. It will be force-stopped the next time the screen is turned off")
-            if (prefs.drowseCandidates != "") {
-                prefs.drowseCandidates += ";"
-            }
-            prefs.drowseCandidates += "$packageName"
-        } else {
-            Timber.v("Not adding '$packageName'. It is already in the list")
-        }
-    }
-
-    fun removeDrowseCandidate(packageName: String) {
-        Timber.d("Removing drowse candidate '$packageName'. It will be not be force-stopped the next time the screen is turned off. You will have to start it manually again if it has already been force-stopped")
-        if (isDrowseCandidate(packageName)) {
-            prefs.drowseCandidates = prefs.drowseCandidates.replace(Regex("$packageName;?"), "")
-        }
-    }
-
-    fun clearDrowseCandidates() {
-        prefs.drowseCandidates = ""
-    }
-
-    fun isDrowseCandidate(packageName: String): Boolean {
-        val pref = prefs.drowseCandidates
-        return pref.matches(Regex("(.+;|^)$packageName(;.+|\$)"))
     }
 }

@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 apply from: 'artifacts.gradle'
 
 android {
@@ -37,6 +39,13 @@ dependencies {
     implementation "com.mikepenz:aboutlibraries:6.1.1"
     // Chainfire's libsuperuser
     implementation 'eu.chainfire:libsuperuser:1.0.0.201704021214'
+    // Room persistance
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+    kapt "android.arch.persistence.room:compiler:1.1.1"
+    implementation "android.arch.lifecycle:viewmodel:1.1.1"
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

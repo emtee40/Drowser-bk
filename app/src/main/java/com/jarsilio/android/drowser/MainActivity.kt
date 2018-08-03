@@ -1,5 +1,7 @@
 package com.jarsilio.android.drowser
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
@@ -10,8 +12,11 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.jarsilio.android.drowser.adapters.AppAdapter
+import com.jarsilio.android.drowser.adapters.AppItemListAdapter
+import com.jarsilio.android.drowser.models.AppDatabase
+import com.jarsilio.android.drowser.models.AppItem
 import com.jarsilio.android.drowser.models.AppsManager
+import com.jarsilio.android.drowser.models.AppItemsViewModel
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
 import com.jarsilio.android.privacypolicy.PrivacyPolicyBuilder
@@ -25,6 +30,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeLayout: SwipeRefreshLayout
+    private lateinit var appItemListAdapter: AppItemListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         prefs = Prefs(this)
@@ -40,17 +46,22 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         recyclerView = findViewById(R.id.recycler_view)
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
+        appItemListAdapter = AppItemListAdapter()
+        recyclerView.adapter = appItemListAdapter
+
+        val viewModel = ViewModelProviders.of(this).get(AppItemsViewModel::class.java)
+        viewModel.getDrowseCandidates(AppDatabase.getInstance(applicationContext).appItemsDao())
+            .observe(this,
+                Observer<List<AppItem>> { list ->
+                    appItemListAdapter.submitList(list)
+                }
+            )
 
         swipeLayout = findViewById(R.id.swipe_container)
         swipeLayout.setOnRefreshListener(this)
 
         DrowserService.startService(this)
 
-        onRefresh()
-    }
-
-    override fun onResume() {
-        super.onResume()
         onRefresh()
     }
 
@@ -71,7 +82,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun onRefresh() {
-        recyclerView.adapter = AppAdapter(appsManager.getDrowseCandidates())
+        appsManager.initDatabase()
         swipeLayout.setRefreshing(false)
     }
 
