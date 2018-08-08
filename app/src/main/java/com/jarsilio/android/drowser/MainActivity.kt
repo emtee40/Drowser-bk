@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_ellipsys, menu)
+        menuInflater.inflate(R.menu.menu, menu)
         return true
     }
 
