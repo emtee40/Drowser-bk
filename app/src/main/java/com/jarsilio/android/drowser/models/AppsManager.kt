@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import com.jarsilio.android.drowser.R
 import eu.chainfire.libsuperuser.Shell
 import timber.log.Timber
 
@@ -78,7 +79,7 @@ class AppsManager(private val context: Context) {
             context.packageManager.getApplicationLabel(applicationInfo) as String
         } catch (e: PackageManager.NameNotFoundException) {
             Timber.e(e)
-            "Untitled app" // TODO: Use a string from strings.xml for this
+            context.getString(R.string.untitled_app) // TODO: Use a string from strings.xml for this
         }
     }
 
