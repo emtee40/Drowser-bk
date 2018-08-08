@@ -51,22 +51,22 @@ interface BaseDao<in T> {
 
 @Dao
 interface AppItemsDao : BaseDao<AppItem> {
-    @get:Query("SELECT * FROM appitem ORDER BY name COLLATE NOCASE")
+    @get:Query("SELECT * FROM appitem ORDER BY name COLLATE UNICODE")
     val all: LiveData<List<AppItem>>
 
-    @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 1 ORDER BY name COLLATE NOCASE")
+    @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 1 ORDER BY name COLLATE UNICODE")
     val drowseCandidates: List<AppItem>
 
-    @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 1 ORDER BY name COLLATE NOCASE")
+    @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 1 ORDER BY name COLLATE UNICODE")
     val drowseCandidatesLive: LiveData<List<AppItem>>
 
-    @get:Query("SELECT * FROM appitem WHERE isSystem = 0 ORDER BY name COLLATE NOCASE")
+    @get:Query("SELECT * FROM appitem WHERE isSystem = 0 ORDER BY name COLLATE UNICODE")
     val userApps: List<AppItem>
 
-    @get:Query("SELECT * FROM appitem WHERE isSystem = 0 ORDER BY name COLLATE NOCASE")
+    @get:Query("SELECT * FROM appitem WHERE isSystem = 0 ORDER BY name COLLATE UNICODE")
     val userAppsLive: LiveData<List<AppItem>>
 
-    @get:Query("SELECT * FROM appitem WHERE isSystem = 1 ORDER BY name COLLATE NOCASE")
+    @get:Query("SELECT * FROM appitem WHERE isSystem = 1 ORDER BY name COLLATE UNICODE")
     val systemApps: List<AppItem>
 
     @Query("SELECT * FROM appitem WHERE packageName IN (:packageNames)")
