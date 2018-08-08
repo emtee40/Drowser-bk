@@ -60,7 +60,7 @@ class AddActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun onRefresh() {
-        appsManager.initDatabase()
+        appsManager.updateAppItemsDatabase()
         swipeLayout.setRefreshing(false)
     }
 
@@ -69,6 +69,10 @@ class AddActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         onRefresh()
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        onRefresh()
+    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             super.onBackPressed()

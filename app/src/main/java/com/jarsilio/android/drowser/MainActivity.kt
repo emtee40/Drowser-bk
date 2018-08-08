@@ -81,8 +81,18 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onResume() {
+        super.onResume()
+        onRefresh()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        onRefresh()
+    }
+
     override fun onRefresh() {
-        appsManager.initDatabase()
+        appsManager.updateAppItemsDatabase()
         swipeLayout.setRefreshing(false)
     }
 

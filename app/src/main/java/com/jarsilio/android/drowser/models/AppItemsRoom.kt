@@ -52,7 +52,10 @@ interface BaseDao<in T> {
 @Dao
 interface AppItemsDao : BaseDao<AppItem> {
     @get:Query("SELECT * FROM appitem ORDER BY name COLLATE UNICODE")
-    val all: LiveData<List<AppItem>>
+    val all: List<AppItem>
+
+    @get:Query("SELECT * FROM appitem ORDER BY name COLLATE UNICODE")
+    val allLive: LiveData<List<AppItem>>
 
     @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 1 ORDER BY name COLLATE UNICODE")
     val drowseCandidates: List<AppItem>
@@ -73,7 +76,7 @@ interface AppItemsDao : BaseDao<AppItem> {
     fun loadAllByPackageNames(packageNames: List<String>): List<AppItem>
 
     @Query("SELECT * FROM appitem WHERE packageName LIKE :packageName LIMIT 1")
-    fun loadByPackageName(packageName: String): AppItem
+    fun loadByPackageName(packageName: String): AppItem?
 
     @Query("UPDATE AppItem SET isDrowseCandidate = :isDrowseCandidate WHERE packageName = :packageName")
     fun setDrowseCandidate(packageName: String, isDrowseCandidate: Boolean)

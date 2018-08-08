@@ -54,23 +54,52 @@ class AppsManager(private val context: Context) {
         return getActiveServices("")
     }
 
-    fun initDatabase() {
+    fun updateAppItemsDatabase() {
         Thread(Runnable {
-            val intent = Intent(Intent.ACTION_MAIN, null)
-            intent.addCategory(Intent.CATEGORY_LAUNCHER)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
-            val resolveInfoList = context.packageManager.queryIntentActivities(intent, 0)
-            for (resolveInfo in resolveInfoList) {
-                val packageName = resolveInfo.activityInfo.applicationInfo.packageName
+            addNewAppItemsToDatabase()
+            removeObsoleteAppItemsFromDatabase()
+        }).start()
+    }
+
+    private fun addNewAppItemsToDatabase() {
+        Timber.d("Adding new apps to database")
+        val intent = Intent(Intent.ACTION_MAIN, null)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+        val resolveInfoList = context.packageManager.queryIntentActivities(intent, 0)
+        for (resolveInfo in resolveInfoList) {
+            val packageName = resolveInfo.activityInfo.applicationInfo.packageName
+
+            val isAppAlreadyInDatabase = appItemsDao.loadByPackageName(packageName) != null
+            if (!isAppAlreadyInDatabase) {
                 val name = getAppName(packageName)
                 val isSystem = isSystemPackage(resolveInfo)
                 val isDrowseCandidate = false
 
                 val appItem = AppItem(packageName, name, isSystem, isDrowseCandidate)
-                Timber.d("Inserting $appItem if it does not already exist")
-                appItemsDao.insertIfNotExists(appItem)
+                Timber.v("-> $appItem")
+                appItemsDao.insertIfNotExists(appItem) // If not exists because there might be apps that expose more than one launcher
             }
-        }).start()
+        }
+    }
+
+    private fun removeObsoleteAppItemsFromDatabase() {
+        Timber.d("Removing obsolete apps from database (probably uninstalled)")
+        for (appItem in appItemsDao.all) {
+            if (!isAppInstalled(appItem)) {
+                Timber.v("-> $appItem")
+                appItemsDao.delete(appItem)
+            }
+        }
+    }
+
+    private fun isAppInstalled(appItem: AppItem): Boolean {
+        return try {
+            context.packageManager.getApplicationInfo(appItem.packageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
     }
 
     private fun getAppName(packageName: String): String {
