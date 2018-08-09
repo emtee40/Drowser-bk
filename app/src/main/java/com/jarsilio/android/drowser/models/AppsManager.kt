@@ -108,7 +108,7 @@ class AppsManager(private val context: Context) {
             context.packageManager.getApplicationLabel(applicationInfo) as String
         } catch (e: PackageManager.NameNotFoundException) {
             Timber.e(e)
-            context.getString(R.string.untitled_app) // TODO: Use a string from strings.xml for this
+            context.getString(R.string.untitled_app)
         }
     }
 
