@@ -30,7 +30,7 @@ class AppsManager(private val context: Context) {
                 commands.add(command)
                 Timber.v("-> $command")
             }
-            
+
             Timber.d("Running shell commands as root")
             Shell.SU.run(commands)
             Timber.d("Done")
