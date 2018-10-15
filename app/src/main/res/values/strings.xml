@@ -44,6 +44,12 @@
         to remove it if you change your mind.
     </string>
 
+    <!-- Notification -->
+    <string name="notification_tap_to_open">Tap to open</string>
+    <string name="notification_drowser_running">Drowser running</string>
+    <string name="notification_persistent">Drowser persistent notification</string>
+    <string name="notification_persistent_channel_description">This notification is used to keep Drowser alive in the background.</string>
+
     <!-- pref id's -->
     <string name="pref_enabled_key">pref_enabled</string>
     <string name="pref_drowse_candidates_key">pref_drowse_candidates_key</string>
