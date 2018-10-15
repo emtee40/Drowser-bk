@@ -32,7 +32,7 @@ data class AppItem(
             context.packageManager.getApplicationIcon(packageName)
         } catch (e: PackageManager.NameNotFoundException) {
             Timber.e(e)
-            ContextCompat.getDrawable(context, R.mipmap.ic_launcher)
+            null
         }
     }
 }
