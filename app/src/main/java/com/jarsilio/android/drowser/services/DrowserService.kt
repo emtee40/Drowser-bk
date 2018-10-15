@@ -66,7 +66,7 @@ class DrowserService : Service() {
                 .setShowWhen(false)
                 .setContentIntent(notificationPendingIntent)
                 .setColor(resources.getColor(R.color.colorPrimary))
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.drowser_notification_icon_white)
                 .setOngoing(true)
                 .setContentTitle("Drowser running")
                 .setTicker("Drowser running")
