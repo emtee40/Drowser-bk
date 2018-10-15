@@ -65,7 +65,7 @@ class DrowserService : Service() {
                 .setContentText("Tap to open")
                 .setShowWhen(false)
                 .setContentIntent(notificationPendingIntent)
-                .setColor(resources.getColor(R.color.colorAccent))
+                .setColor(resources.getColor(R.color.colorPrimary))
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setOngoing(true)
                 .setContentTitle("Drowser running")
