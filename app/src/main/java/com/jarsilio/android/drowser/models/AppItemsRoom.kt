@@ -13,8 +13,6 @@ import android.arch.persistence.room.Update
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
-import android.support.v4.content.ContextCompat
-import com.jarsilio.android.drowser.R
 import timber.log.Timber
 import android.arch.persistence.room.Room
 import android.arch.lifecycle.LiveData
