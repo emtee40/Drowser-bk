@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
@@ -24,6 +25,7 @@ import com.jarsilio.android.drowser.services.DrowserService
 import com.jarsilio.android.privacypolicy.PrivacyPolicyBuilder
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.LibsBuilder
+import eu.chainfire.libsuperuser.Shell
 
 class MainActivity : AppCompatActivity() {
     private lateinit var prefs: Prefs
@@ -71,7 +73,20 @@ class MainActivity : AppCompatActivity() {
         drowseCandidatesRecyclerView.isNestedScrollingEnabled = false
         nonDrowseCandidatesRecyclerView.isNestedScrollingEnabled = false
 
-        DrowserService.startService(this)
+        if (!Shell.SU.available()) {
+            AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.root_required))
+                    .setPositiveButton(android.R.string.yes, { dialog, which -> finish() })
+                    .setCancelable(false)
+                    .show()
+            DrowserService.stopService(this) // If it was ever started and at some point the permissions were removed, better to stop running and failing all the time
+        } else {
+            if (prefs.isFirstRun) { // Only enable service (on first launch) if root permissions were granted
+                prefs.isEnabled = true
+                prefs.isFirstRun = false
+            }
+            DrowserService.startService(this)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
