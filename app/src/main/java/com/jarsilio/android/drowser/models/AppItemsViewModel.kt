@@ -8,6 +8,10 @@ class AppItemsViewModel : ViewModel() {
         return appItemsDao.drowseCandidatesLive
     }
 
+    fun getNonDrowseCandidates(appItemsDao: AppItemsDao): LiveData<List<AppItem>> {
+        return appItemsDao.nonDrowseCandidatesLive
+    }
+
     fun getUserApps(appItemsDao: AppItemsDao): LiveData<List<AppItem>> {
         return appItemsDao.userAppsLive
     }

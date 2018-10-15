@@ -33,6 +33,17 @@
     <!-- Add activity -->
     <string name="title_activity_add">Add apps</string>
 
+    <!-- Excluded apps from locking -->
+    <string name="drowse_candidates_section_title">Drowse candidates</string>
+    <string name="non_drowse_candidates_section_title">Other apps</string>
+    <string name="drower_candidates_empty_text">
+        The apps listed here will be drowsed, i.e. force-killed every time the screen goes off.
+        \n\n<b>BEWARE!</b> This is a very impolite way of closing apps. They might misbehave and/or you
+        might lose data.
+        \n\nJust tap on an app below to add it to this list. Tap on it again
+        to remove it if you change your mind.
+    </string>
+
     <!-- pref id's -->
     <string name="pref_enabled_key">pref_enabled</string>
     <string name="pref_drowse_candidates_key">pref_drowse_candidates_key</string>

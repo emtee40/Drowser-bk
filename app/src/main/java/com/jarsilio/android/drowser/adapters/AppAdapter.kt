@@ -46,17 +46,11 @@ class AppItemHolder(view: View) : RecyclerView.ViewHolder(view) {
 
             if (appItem.isDrowseCandidate) {
                 Timber.d("${appItem.packageName} is not a drowse candidate anymore")
-                Toast.makeText(cardView.context,
-                    cardView.context.getString(R.string.toast_remove_drowse, appItem.name),
-                    Toast.LENGTH_LONG).show()
                 Thread(Runnable {
                     dao.setDrowseCandidate(appItem.packageName, false)
                 }).start()
             } else {
                 Timber.d("${appItem.packageName} is now a drowse candidate")
-                Toast.makeText(cardView.context,
-                    cardView.context.getString(R.string.toast_add_drowse, appItem.name),
-                    Toast.LENGTH_LONG).show()
                 Thread(Runnable {
                     dao.setDrowseCandidate(appItem.packageName, true)
                 }).start()

@@ -4,8 +4,8 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
@@ -15,26 +15,25 @@ import android.view.View
 import com.jarsilio.android.drowser.adapters.AppItemListAdapter
 import com.jarsilio.android.drowser.models.AppDatabase
 import com.jarsilio.android.drowser.models.AppItem
-import com.jarsilio.android.drowser.models.AppsManager
+import com.jarsilio.android.drowser.models.AppItemsDao
 import com.jarsilio.android.drowser.models.AppItemsViewModel
+import com.jarsilio.android.drowser.models.AppsManager
+import com.jarsilio.android.drowser.models.EmptyRecyclerView
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
 import com.jarsilio.android.privacypolicy.PrivacyPolicyBuilder
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.LibsBuilder
 
-class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
+class MainActivity : AppCompatActivity() {
     private lateinit var prefs: Prefs
     private lateinit var appsManager: AppsManager
-
-    private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var swipeLayout: SwipeRefreshLayout
-    private lateinit var appItemListAdapter: AppItemListAdapter
+    private lateinit var appItemsDao: AppItemsDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         prefs = Prefs(this)
         appsManager = AppsManager(this)
+        appItemsDao = AppDatabase.getInstance(this).appItemsDao()
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -43,26 +42,36 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         setSupportActionBar(toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
 
-        recyclerView = findViewById(R.id.recycler_view)
-        linearLayoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = linearLayoutManager
-        appItemListAdapter = AppItemListAdapter()
-        recyclerView.adapter = appItemListAdapter
+        val drowseCandidatesRecyclerView = findViewById<EmptyRecyclerView>(R.id.recycler_drowse_candidates) as EmptyRecyclerView
+        val emptyView = findViewById<CardView>(R.id.empty_view)
+        drowseCandidatesRecyclerView.setEmptyView(emptyView)
+        drowseCandidatesRecyclerView.layoutManager = LinearLayoutManager(this)
+        val drowseCandidatesListAdapter = AppItemListAdapter()
+        drowseCandidatesRecyclerView.adapter = drowseCandidatesListAdapter
+
+        val nonDrowseCandidatesRecyclerView = findViewById<RecyclerView>(R.id.recycler_non_drowse_candidates) as RecyclerView
+        nonDrowseCandidatesRecyclerView.layoutManager = LinearLayoutManager(this)
+        val nonDrowseCandidatesListAdapter = AppItemListAdapter()
+        nonDrowseCandidatesRecyclerView.adapter = nonDrowseCandidatesListAdapter
 
         val viewModel = ViewModelProviders.of(this).get(AppItemsViewModel::class.java)
-        viewModel.getDrowseCandidates(AppDatabase.getInstance(applicationContext).appItemsDao())
-            .observe(this,
+        viewModel.getDrowseCandidates(appItemsDao)
+                .observe(this,
+                        Observer<List<AppItem>> { list ->
+                            drowseCandidatesListAdapter.submitList(list)
+                        }
+                )
+        viewModel.getNonDrowseCandidates(appItemsDao).observe(this,
                 Observer<List<AppItem>> { list ->
-                    appItemListAdapter.submitList(list)
+                    nonDrowseCandidatesListAdapter.submitList(list)
                 }
-            )
+        )
 
-        swipeLayout = findViewById(R.id.swipe_container)
-        swipeLayout.setOnRefreshListener(this)
+        // This enables inertia while scrolling
+        drowseCandidatesRecyclerView.isNestedScrollingEnabled = false
+        nonDrowseCandidatesRecyclerView.isNestedScrollingEnabled = false
 
         DrowserService.startService(this)
-
-        onRefresh()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -72,7 +81,6 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_button_add -> startActivity(Intent(this, AddActivity::class.java))
             R.id.menu_item_settings -> startActivity(Intent(this, PreferencesActivity::class.java))
             R.id.menu_item_privacy_policy -> showPrivacyPolicyActivity()
             R.id.menu_item_licenses -> showAboutLicensesActivity()
@@ -83,17 +91,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onResume() {
         super.onResume()
-        onRefresh()
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        onRefresh()
-    }
-
-    override fun onRefresh() {
         appsManager.updateAppItemsDatabase()
-        swipeLayout.setRefreshing(false)
     }
 
     private fun showPrivacyPolicyActivity() {
