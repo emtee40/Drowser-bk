@@ -44,6 +44,10 @@
         to remove it if you change your mind.
     </string>
 
+    <string name="undo">UNDO</string>
+    <string name="added_app">Added %s to list</string>
+    <string name="removed_app">Removed %s from list</string>
+
     <!-- Notification -->
     <string name="notification_tap_to_open">Tap to open</string>
     <string name="notification_drowser_running">Drowser running</string>

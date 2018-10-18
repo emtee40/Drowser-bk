@@ -1,5 +1,6 @@
 package com.jarsilio.android.drowser.adapters
 
+import android.support.design.widget.Snackbar
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.CardView
@@ -42,19 +43,38 @@ class AppItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         // Adding click listener on CardView to open clicked application directly from here .
         cardView.setOnClickListener {
             Timber.d("Clicked on ${appItem.packageName}.")
-
-            if (appItem.isDrowseCandidate) {
-                Timber.d("${appItem.packageName} is not a drowse candidate anymore")
-                Thread(Runnable {
-                    dao.setDrowseCandidate(appItem.packageName, false)
-                }).start()
-            } else {
-                Timber.d("${appItem.packageName} is now a drowse candidate")
-                Thread(Runnable {
-                    dao.setDrowseCandidate(appItem.packageName, true)
-                }).start()
-            }
+            toggleIsDrowseCandidate(cardView, appItem)
         }
+    }
+
+    private fun toggleIsDrowseCandidate(view: View, appItem: AppItem) {
+        Thread(Runnable {
+            dao.setDrowseCandidate(appItem.packageName, !appItem.isDrowseCandidate)
+        }).start()
+
+        val snackBarMessage: String
+        val debugMessage: String
+        val undoDebugMessage: String
+
+        if (!appItem.isDrowseCandidate) {
+            debugMessage = "Added ${appItem.packageName} to drowse candidate list"
+            snackBarMessage = view.context.getString(R.string.added_app, appItem.name)
+            undoDebugMessage = "Undid adding ${appItem.packageName} to drowse candidate list"
+        } else {
+            debugMessage = "Removed ${appItem.packageName} from drowse candidate list"
+            snackBarMessage = view.context.getString(R.string.removed_app, appItem.name)
+            undoDebugMessage = "Undid removing ${appItem.packageName} from drowse candidate list"
+        }
+
+        Timber.d(debugMessage)
+
+        Snackbar.make(view, snackBarMessage, Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo) {
+                    Timber.d(undoDebugMessage)
+                    Thread(Runnable {
+                        dao.setDrowseCandidate(appItem.packageName, appItem.isDrowseCandidate)
+                    }).start()
+                }.show()
     }
 }
 
