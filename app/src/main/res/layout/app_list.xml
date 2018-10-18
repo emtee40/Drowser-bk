@@ -14,7 +14,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:descendantFocusability="blocksDescendants">
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
