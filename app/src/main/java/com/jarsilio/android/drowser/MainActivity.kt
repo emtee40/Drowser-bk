@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
@@ -22,6 +23,7 @@ import com.jarsilio.android.drowser.models.AppsManager
 import com.jarsilio.android.drowser.models.EmptyRecyclerView
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
+import com.jarsilio.android.drowser.utils.Utils
 import com.jarsilio.android.privacypolicy.PrivacyPolicyBuilder
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.LibsBuilder
@@ -80,11 +82,25 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        if (prefs.disableUntil < System.currentTimeMillis()) {
+            menu?.findItem(R.id.menu_item_global_pause)?.isVisible = true
+            menu?.findItem(R.id.menu_item_global_play)?.isVisible = false
+        } else {
+            menu?.findItem(R.id.menu_item_global_pause)?.isVisible = false
+            menu?.findItem(R.id.menu_item_global_play)?.isVisible = true
+        }
+
+        return super.onPrepareOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_settings -> startActivity(Intent(this, PreferencesActivity::class.java))
             R.id.menu_item_privacy_policy -> showPrivacyPolicyActivity()
             R.id.menu_item_licenses -> showAboutLicensesActivity()
+            R.id.menu_item_global_pause -> showDisableUntilDialog()
+            R.id.menu_item_global_play -> reEnable()
         }
 
         return super.onOptionsItemSelected(item)
@@ -92,6 +108,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        invalidateOptionsMenu()
         requestRootAccessIfNecessaryAndStartService()
     }
 
@@ -128,5 +145,39 @@ class MainActivity : AppCompatActivity() {
                 .withActivityTitle(getString(R.string.menu_item_licenses))
                 .withAboutDescription(getString(R.string.licenses_about_libraries_text, getString(R.string.app_name)))
                 .start(applicationContext)
+    }
+
+    private fun showDisableUntilDialog() {
+        val timeoutStrings = arrayOf("1 minute", "5 minutes", "30 minutes", "1 hour", "2 hours", "indefinitely")
+        AlertDialog.Builder(this)
+                .setTitle("Disable drowsing apps for")
+                .setSingleChoiceItems(timeoutStrings, prefs.lastDisableUntilUserChoide) { dialog, which ->
+                    prefs.lastDisableUntilUserChoide = which
+                    prefs.disableUntil = when (which) {
+                        0 -> System.currentTimeMillis() + 1 * 60 * 1000
+                        1 -> System.currentTimeMillis() + 5 * 60 * 1000
+                        2 -> System.currentTimeMillis() + 30 * 60 * 1000
+                        3 -> System.currentTimeMillis() + 1 * 60 * 60 * 1000
+                        4 -> System.currentTimeMillis() + 2 * 60 * 60 * 1000
+                        5 -> Long.MAX_VALUE // It's the year 292,278,994 :) Will Drowser or mankind exist?
+                        else -> 0
+                    }
+                    Timber.d("Temporarily disabling Drowser until ${Utils.getReadableDate(prefs.disableUntil)}")
+                    Snackbar.make(findViewById<View>(R.id.main_content),
+                            getString(R.string.snackbar_disabled_until, Utils.getReadableTime(prefs.disableUntil)),
+                            Snackbar.LENGTH_LONG).show()
+                    dialog.dismiss()
+                    invalidateOptionsMenu() // force onPrepareOptionsMenu
+                }
+                .setNegativeButton(android.R.string.no) { dialog, which -> }
+                .show()
+    }
+
+    private fun reEnable() {
+        prefs.disableUntil = 0
+        invalidateOptionsMenu() // force onPrepareOptionsMenu
+        Snackbar.make(findViewById<View>(R.id.main_content),
+                getString(R.string.snackbar_reenabled),
+                Snackbar.LENGTH_LONG).show()
     }
 }

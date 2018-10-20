@@ -14,4 +14,14 @@
         android:title="@string/menu_item_licenses"
         android:orderInCategory="150"
         app:showAsAction="never" />
+    <item android:id="@+id/menu_item_global_pause"
+        android:title="@string/menu_item_global_pause"
+        android:icon="@drawable/ic_pause_white"
+        android:orderInCategory="150"
+        app:showAsAction="ifRoom" />
+    <item android:id="@+id/menu_item_global_play"
+        android:title="@string/menu_item_global_play"
+        android:icon="@drawable/ic_play_arrow_white"
+        android:orderInCategory="200"
+        app:showAsAction="ifRoom" />
 </menu>
