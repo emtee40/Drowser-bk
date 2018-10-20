@@ -69,17 +69,19 @@ class AppsManager(private val context: Context) {
         val resolveInfoList = context.packageManager.queryIntentActivities(intent, 0)
         for (resolveInfo in resolveInfoList) {
             val packageName = resolveInfo.activityInfo.applicationInfo.packageName
+            val appAlreadyInDatabase = appItemsDao.loadByPackageName(packageName) != null
 
-            val isAppAlreadyInDatabase = appItemsDao.loadByPackageName(packageName) != null
-            if (!isAppAlreadyInDatabase) {
-                val name = getAppName(packageName)
-                val isSystem = isSystemPackage(resolveInfo)
-                val isDrowseCandidate = false
-
-                val appItem = AppItem(packageName, name, isSystem, isDrowseCandidate)
-                Timber.v("-> $appItem")
-                appItemsDao.insertIfNotExists(appItem) // If not exists because there might be apps that expose more than one launcher
+            if (appAlreadyInDatabase || packageName == context.packageName) {
+                continue
             }
+
+            val name = getAppName(packageName)
+            val isSystem = isSystemPackage(resolveInfo)
+            val isDrowseCandidate = false
+
+            val appItem = AppItem(packageName, name, isSystem, isDrowseCandidate)
+            Timber.v("-> $appItem")
+            appItemsDao.insertIfNotExists(appItem) // If not exists because there might be apps that expose more than one launcher
         }
     }
 
