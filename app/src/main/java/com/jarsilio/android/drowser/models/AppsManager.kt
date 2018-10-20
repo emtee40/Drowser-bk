@@ -6,16 +6,21 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import com.jarsilio.android.drowser.R
+import com.jarsilio.android.drowser.prefs.Prefs
+import com.jarsilio.android.drowser.services.DrowserService
 import eu.chainfire.libsuperuser.Shell
 import timber.log.Timber
 
 class AppsManager(private val context: Context) {
     private val SERVICE_RECORD_MATCH = Regex("\\s*\\* ServiceRecord\\{.+ (.+)\\}.*") // Example:  * ServiceRecord{aad95cb u0 com.whatsapp/.gcm.RegistrationIntentService}
     private val appItemsDao = AppDatabase.getInstance(context.applicationContext).appItemsDao()
+    private val prefs = Prefs(context)
 
     fun forceStopApps() {
         if (!Shell.SU.available()) {
-            Timber.e("Root access not granted (or device nor rooted)")
+            Timber.e("Root access not granted (or device nor rooted). Stopping DrowserService until root access is granted. Will request root access once the user opens the app again.")
+            prefs.requestRootAccess = true
+            DrowserService.stopService(context)
             return
         }
 

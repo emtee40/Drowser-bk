@@ -26,6 +26,7 @@ import com.jarsilio.android.privacypolicy.PrivacyPolicyBuilder
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.LibsBuilder
 import eu.chainfire.libsuperuser.Shell
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     private lateinit var prefs: Prefs
@@ -72,21 +73,6 @@ class MainActivity : AppCompatActivity() {
         // This enables inertia while scrolling
         drowseCandidatesRecyclerView.isNestedScrollingEnabled = false
         nonDrowseCandidatesRecyclerView.isNestedScrollingEnabled = false
-
-        if (!Shell.SU.available()) {
-            AlertDialog.Builder(this)
-                    .setMessage(getString(R.string.root_required))
-                    .setPositiveButton(android.R.string.yes, { dialog, which -> finish() })
-                    .setCancelable(false)
-                    .show()
-            DrowserService.stopService(this) // If it was ever started and at some point the permissions were removed, better to stop running and failing all the time
-        } else {
-            if (prefs.isFirstRun) { // Only enable service (on first launch) if root permissions were granted
-                prefs.isEnabled = true
-                prefs.isFirstRun = false
-            }
-            DrowserService.startService(this)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -106,7 +92,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        appsManager.updateAppItemsDatabase()
+        requestRootAccessIfNecessaryAndStartService()
+    }
+
+    fun requestRootAccessIfNecessaryAndStartService() {
+        if (prefs.requestRootAccess && !Shell.SU.available()) {
+            Timber.e("Root access denied!")
+            AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.root_required))
+                    .setPositiveButton(android.R.string.yes, { dialog, which -> finish() })
+                    .setCancelable(false)
+                    .show()
+        } else {
+            appsManager.updateAppItemsDatabase()
+            prefs.requestRootAccess = false
+            DrowserService.startService(this)
+        }
     }
 
     private fun showPrivacyPolicyActivity() {

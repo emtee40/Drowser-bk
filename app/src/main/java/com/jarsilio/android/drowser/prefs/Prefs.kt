@@ -6,9 +6,9 @@ import android.preference.PreferenceManager
 import com.jarsilio.android.drowser.R
 
 class Prefs(context: Context) {
-    val IS_FIRST_RUN = context.getString(R.string.pref_first_run_key)
     val IS_ENABLED = context.getString(R.string.pref_enabled_key)
     val SHOW_NOTIFICATION = context.getString(R.string.pref_notification_key)
+    val REQUEST_ROOT_ACCESS = context.getString(R.string.pref_request_root_access_key)
 
     val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -16,9 +16,9 @@ class Prefs(context: Context) {
         get() = prefs.getBoolean(IS_ENABLED, false)
         set(value) = prefs.edit().putBoolean(IS_ENABLED, value).apply()
 
-    var isFirstRun: Boolean
-        get() = prefs.getBoolean(IS_FIRST_RUN, true)
-        set(value) = prefs.edit().putBoolean(IS_FIRST_RUN, value).apply()
+    var requestRootAccess: Boolean
+        get() = prefs.getBoolean(REQUEST_ROOT_ACCESS, true)
+        set(value) = prefs.edit().putBoolean(REQUEST_ROOT_ACCESS, value).apply()
 
     var showNotification: Boolean
         get() = prefs.getBoolean(SHOW_NOTIFICATION, true)
