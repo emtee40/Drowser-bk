@@ -16,6 +16,8 @@
     <!-- Play/Pause -->
     <string name="snackbar_disabled_until">Disabled Drowser until %s</string>
     <string name="snackbar_reenabled">Re-enabled Drowser</string>
+    <!-- zzz -->
+    <string name="snackbar_zzz">Drowsing apps...</string>
 
     <!-- Prefs -->
     <string name="prefs_category_service">Service</string>
@@ -32,6 +34,7 @@
     <string name="menu_item_licenses">Licenses</string>
     <string name="menu_item_global_pause">Temporarily Disable...</string>
     <string name="menu_item_global_play">Re-enable...</string>
+    <string name="menu_item_zzz">Drowse apps now</string>
 
     <!-- Licenses Activity -->
     <string name="licenses_about_libraries_text" translatable="false"><![CDATA[<br/><b>%s License</b><br/><br/>Copyright (c) 2016-2018 Juan García Basilio<br/><br/>This app is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.<br/><br/>This app is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the <a href="http://www.gnu.org/licenses/">GNU General Public License</a> for more details.<br/><br/><b>Third-party libraries</b><br/><br/>Here is a list of the libraries used by this app. Tap on them for more information.]]></string>

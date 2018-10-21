@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity() {
             R.id.menu_item_licenses -> showAboutLicensesActivity()
             R.id.menu_item_global_pause -> showDisableUntilDialog()
             R.id.menu_item_global_play -> reEnable()
+            R.id.menu_item_drowse_now -> drowseNow()
         }
 
         return super.onOptionsItemSelected(item)
@@ -179,5 +180,12 @@ class MainActivity : AppCompatActivity() {
         Snackbar.make(findViewById<View>(R.id.main_content),
                 getString(R.string.snackbar_reenabled),
                 Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun drowseNow() {
+        Snackbar.make(findViewById<View>(R.id.main_content),
+                getString(R.string.snackbar_zzz),
+                Snackbar.LENGTH_LONG).show()
+        AppsManager(this).forceStopApps()
     }
 }

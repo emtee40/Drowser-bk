@@ -24,4 +24,9 @@
         android:icon="@drawable/ic_play_arrow_white"
         android:orderInCategory="200"
         app:showAsAction="ifRoom" />
+    <item android:id="@+id/menu_item_drowse_now"
+        android:title="@string/menu_item_zzz"
+        android:icon="@drawable/ic_sleep_white"
+        android:orderInCategory="250"
+        app:showAsAction="ifRoom" />
 </menu>
