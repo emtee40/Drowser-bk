@@ -10,6 +10,8 @@ apply from: 'artifacts.gradle'
 
 android {
     compileSdkVersion 27
+    buildToolsVersion '28.0.3'
+
     defaultConfig {
         applicationId "com.jarsilio.android.drowser"
         minSdkVersion 15
