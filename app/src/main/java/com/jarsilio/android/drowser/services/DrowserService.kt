@@ -92,8 +92,10 @@ class DrowserService : Service() {
                 Timber.i("Starting Drowser")
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                     shouldStartForegroundService(context)) {
+                    Timber.d("Starting service with context.startForegroundService (Android >= Oreo and battery optimization on)")
                     context.startForegroundService(Intent(context, DrowserService::class.java))
                 } else {
+                    Timber.d("Starting service with context.startService (Android < Oreo or battery optimization off)")
                     context.startService(Intent(context, DrowserService::class.java))
                 }
             } else {

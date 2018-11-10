@@ -19,6 +19,7 @@ class PreferencesActivity : Activity(), SharedPreferences.OnSharedPreferenceChan
         super.onCreate(savedInstanceState)
         prefs = Prefs.getInstance(this)
         prefs.prefs.registerOnSharedPreferenceChangeListener(this)
+        prefs.preferencesActivity = this
         // Display the fragment as the main content.
         fragmentManager.beginTransaction().replace(android.R.id.content, PrefsFragment()).commit()
     }
@@ -48,12 +49,26 @@ class PreferencesActivity : Activity(), SharedPreferences.OnSharedPreferenceChan
                     Timber.d("Requesting to ignore battery optimizations")
                     startActivityForResult(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
                             Uri.parse("package:$packageName")), BATTERY_OPTIMIZATION_REQUEST_CODE)
+                } else {
+                    DrowserService.restartService(this)
                 }
-                DrowserService.restartService(this)
             }
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            BATTERY_OPTIMIZATION_REQUEST_CODE -> {
+                if (!DrowserService.isIgnoringBatteryOptimizations(this)) {
+                    Timber.d("The user didn't accept the ignoring of the battery optimization. Forcing show_notification to true")
+                    prefs.showNotification = true
+                } else {
+                    DrowserService.restartService(this)
+                }
+            }
+        }
+    }
     class PrefsFragment : PreferenceFragment() {
 
         override fun onCreate(savedInstanceState: Bundle?) {
