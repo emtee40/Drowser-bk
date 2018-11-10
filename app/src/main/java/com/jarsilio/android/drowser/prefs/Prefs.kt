@@ -13,7 +13,7 @@ class Prefs(context: Context) {
     val SHOW_NOTIFICATION: String = context.getString(R.string.pref_notification_key)
 
     var isEnabled: Boolean
-        get() = prefs.getBoolean(IS_ENABLED, false)
+        get() = prefs.getBoolean(IS_ENABLED, true)
         set(value) = prefs.edit().putBoolean(IS_ENABLED, value).apply()
 
     var showNotification: Boolean
