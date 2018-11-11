@@ -17,7 +17,7 @@ class PreferencesActivity : Activity(), SharedPreferences.OnSharedPreferenceChan
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefs = Prefs(this)
+        prefs = Prefs.getInstance(this)
         prefs.prefs.registerOnSharedPreferenceChangeListener(this)
         // Display the fragment as the main content.
         fragmentManager.beginTransaction().replace(android.R.id.content, PrefsFragment()).commit()

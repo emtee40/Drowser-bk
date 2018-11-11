@@ -12,7 +12,7 @@ import timber.log.Timber
 class ScreenReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_SCREEN_OFF) {
-            val prefs = Prefs(context)
+            val prefs = Prefs.getInstance(context)
 
             Timber.d("Screen off")
 

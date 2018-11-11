@@ -87,7 +87,7 @@ class DrowserService : Service() {
         const val BATTERY_OPTIMIZATION_REQUEST_CODE = 20002
 
         fun startService(context: Context) {
-            val prefs = Prefs(context)
+            val prefs = Prefs.getInstance(context)
             if (prefs.isEnabled) {
                 Timber.i("Starting Drowser")
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
@@ -123,7 +123,7 @@ class DrowserService : Service() {
         }
 
         private fun shouldStartForegroundService(context: Context): Boolean {
-            return !isIgnoringBatteryOptimizations(context) || Prefs(context).showNotification
+            return !isIgnoringBatteryOptimizations(context) || Prefs.getInstance(context).showNotification
         }
     }
 }

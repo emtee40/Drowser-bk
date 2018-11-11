@@ -8,7 +8,7 @@ import timber.log.Timber
 
 class AutoStart : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        val prefs = Prefs(context)
+        val prefs = Prefs.getInstance(context)
         if (prefs.isEnabled) {
             if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
                 Timber.d("Received ACTION_BOOT_COMPLETED.")

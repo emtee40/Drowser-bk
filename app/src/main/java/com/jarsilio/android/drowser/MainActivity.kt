@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appItemsDao: AppItemsDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        prefs = Prefs(this)
+        prefs = Prefs.getInstance(this)
         appsManager = AppsManager(this)
         appItemsDao = AppDatabase.getInstance(this).appItemsDao()
 

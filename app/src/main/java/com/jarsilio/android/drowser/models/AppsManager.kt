@@ -14,7 +14,7 @@ import timber.log.Timber
 class AppsManager(private val context: Context) {
     private val SERVICE_RECORD_MATCH = Regex("\\s*\\* ServiceRecord\\{.+ (.+)\\}.*") // Example:  * ServiceRecord{aad95cb u0 com.whatsapp/.gcm.RegistrationIntentService}
     private val appItemsDao = AppDatabase.getInstance(context.applicationContext).appItemsDao()
-    private val prefs = Prefs(context)
+    private val prefs = Prefs.getInstance(context)
 
     fun forceStopApps() {
         if (!Shell.SU.available()) {
