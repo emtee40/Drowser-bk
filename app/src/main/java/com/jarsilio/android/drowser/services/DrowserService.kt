@@ -129,3 +129,54 @@ class DrowserService : Service() {
         }
     }
 }
+
+enum class Timeout(val millis: Long, val resourceId: Int) {
+    NO_TIMEOUT(0, R.string.timeout_no_timeout),
+    ONE_MINUTE(1 * 60 * 1000, R.string.timeout_one_minute),
+    FIVE_MINUTES(5 * 60 * 1000, R.string.timeout_five_minutes),
+    THIRTY_MINUTES(30 * 60 * 1000, R.string.timeout_thirty_minutes),
+    ONE_HOUR(1 * 60 * 60 * 1000, R.string.timeout_one_hour),
+    TWO_HOURS(2 * 60 * 60 * 1000, R.string.timeout_two_hours),
+    // Set INFINITY to Long.MAX_VALUE / 2 so that we can add System.currentMillis() to it without going backwards in time
+    INFINITY(Long.MAX_VALUE / 2, R.string.timeout_infinity);
+
+    val disableUntil: Long
+        get() = System.currentTimeMillis() + millis
+
+    val next: Timeout
+        get() {
+            val values = enumValues<Timeout>()
+            val nextOrdinal = (ordinal + 1) % values.size
+            return values[nextOrdinal]
+        }
+
+    fun getString(context: Context): String {
+        return context.getString(resourceId)
+    }
+
+    companion object {
+        fun getTimeout(disableUntil: Long): Timeout {
+            var timeout = NO_TIMEOUT
+            val timeUntilCurrentTimeout = disableUntil - System.currentTimeMillis()
+
+            for (value in enumValues<Timeout>()) {
+                if (timeUntilCurrentTimeout <= value.millis) {
+                    timeout = value
+                    break
+                }
+            }
+
+            return timeout
+        }
+
+        fun getStringsForChoiceDialog(context: Context): Array<String> {
+            val timeoutStrings = mutableListOf<String>()
+            for (timeout in enumValues<Timeout>()) {
+                if (timeout != NO_TIMEOUT) { // The dialog already has a CANCEL button, so NO_TIMEOUT would be redundant
+                    timeoutStrings.add(timeout.getString(context))
+                }
+            }
+            return timeoutStrings.toTypedArray()
+        }
+    }
+}

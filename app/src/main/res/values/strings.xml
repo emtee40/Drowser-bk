@@ -69,6 +69,15 @@
         \n\nYou need to root your device and/or grant root permissions to Drowser.
     </string>
 
+    <!-- Pause and Timeouts -->
+    <string name="timeout_no_timeout">no timeout</string>
+    <string name="timeout_one_minute">1 minute</string>
+    <string name="timeout_five_minutes">5 minutes</string>
+    <string name="timeout_thirty_minutes">30 minutes</string>
+    <string name="timeout_one_hour">1 hour</string>
+    <string name="timeout_two_hours">2 hours</string>
+    <string name="timeout_infinity">indefinitely</string>
+
     <!-- pref id's -->
     <string name="pref_enabled_key" translatable="false">pref_enabled</string>
     <string name="pref_notification_key" translatable="false">pref_notification</string>

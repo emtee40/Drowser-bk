@@ -23,6 +23,7 @@ import com.jarsilio.android.drowser.models.AppsManager
 import com.jarsilio.android.drowser.models.EmptyRecyclerView
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
+import com.jarsilio.android.drowser.services.Timeout
 import com.jarsilio.android.drowser.utils.Utils
 import com.jarsilio.android.privacypolicy.PrivacyPolicyBuilder
 import com.mikepenz.aboutlibraries.Libs
@@ -149,20 +150,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showDisableUntilDialog() {
-        val timeoutStrings = arrayOf("1 minute", "5 minutes", "30 minutes", "1 hour", "2 hours", "indefinitely")
+        val timeoutStrings = Timeout.getStringsForChoiceDialog(this)
         AlertDialog.Builder(this)
                 .setTitle("Disable drowsing apps for")
                 .setSingleChoiceItems(timeoutStrings, prefs.lastDisableUntilUserChoice) { dialog, which ->
                     prefs.lastDisableUntilUserChoice = which
-                    prefs.disableUntil = when (which) {
-                        0 -> System.currentTimeMillis() + 1 * 60 * 1000
-                        1 -> System.currentTimeMillis() + 5 * 60 * 1000
-                        2 -> System.currentTimeMillis() + 30 * 60 * 1000
-                        3 -> System.currentTimeMillis() + 1 * 60 * 60 * 1000
-                        4 -> System.currentTimeMillis() + 2 * 60 * 60 * 1000
-                        5 -> Long.MAX_VALUE // It's the year 292,278,994 :) Will Drowser or mankind exist?
-                        else -> 0
-                    }
+                    prefs.disableUntil = Timeout.values()[which].disableUntil
                     Timber.d("Temporarily disabling Drowser until ${Utils.getReadableDate(prefs.disableUntil)}")
                     Snackbar.make(findViewById<View>(R.id.main_content),
                             getString(R.string.snackbar_disabled_until, Utils.getReadableTime(prefs.disableUntil)),
