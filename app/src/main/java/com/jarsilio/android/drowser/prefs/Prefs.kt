@@ -39,7 +39,7 @@ class Prefs private constructor(context: Context) {
         get() = prefs.getLong(DISABLE_UNTIL, 0)
         set(value) = prefs.edit().putLong(DISABLE_UNTIL, value).apply()
 
-    var lastDisableUntilUserChoide: Int
+    var lastDisableUntilUserChoice: Int
         get() = prefs.getInt(LAST_DISABLE_UNTIL_USER_CHOICE, 2)
         set(value) = prefs.edit().putInt(LAST_DISABLE_UNTIL_USER_CHOICE, value).apply()
 

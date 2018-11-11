@@ -152,8 +152,8 @@ class MainActivity : AppCompatActivity() {
         val timeoutStrings = arrayOf("1 minute", "5 minutes", "30 minutes", "1 hour", "2 hours", "indefinitely")
         AlertDialog.Builder(this)
                 .setTitle("Disable drowsing apps for")
-                .setSingleChoiceItems(timeoutStrings, prefs.lastDisableUntilUserChoide) { dialog, which ->
-                    prefs.lastDisableUntilUserChoide = which
+                .setSingleChoiceItems(timeoutStrings, prefs.lastDisableUntilUserChoice) { dialog, which ->
+                    prefs.lastDisableUntilUserChoice = which
                     prefs.disableUntil = when (which) {
                         0 -> System.currentTimeMillis() + 1 * 60 * 1000
                         1 -> System.currentTimeMillis() + 5 * 60 * 1000
