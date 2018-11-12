@@ -9,8 +9,9 @@ import com.jarsilio.android.drowser.PreferencesActivity
 import com.jarsilio.android.drowser.PreferencesActivity.PrefsFragment
 import com.jarsilio.android.drowser.R
 import com.jarsilio.android.drowser.models.SingletonHolder
+import com.jarsilio.android.drowser.services.Scheduler
 
-class Prefs private constructor(context: Context) {
+class Prefs private constructor(private val context: Context) {
     val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     var preferencesActivity: PreferencesActivity? = null
 
@@ -47,7 +48,10 @@ class Prefs private constructor(context: Context) {
 
     var disableUntil: Long
         get() = prefs.getLong(DISABLE_UNTIL, 0)
-        set(value) = prefs.edit().putLong(DISABLE_UNTIL, value).apply()
+        set(value) {
+            prefs.edit().putLong(DISABLE_UNTIL, value).apply()
+            Scheduler.scheduleAlarm(context, value)
+        }
 
     var lastDisableUntilUserChoice: Int
         get() = prefs.getInt(LAST_DISABLE_UNTIL_USER_CHOICE, 2)
