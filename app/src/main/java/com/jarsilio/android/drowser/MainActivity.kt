@@ -176,9 +176,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun drowseNow() {
-        Snackbar.make(findViewById<View>(R.id.main_content),
+        val snackbar = Snackbar.make(findViewById<View>(R.id.main_content),
                 getString(R.string.snackbar_zzz),
-                Snackbar.LENGTH_LONG).show()
-        AppsManager(this).forceStopApps()
+                Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo) {
+                    Timber.d("User canceled 'zzz'. Not drowsing apps...")
+                }
+        snackbar.addCallback(object : Snackbar.Callback() {
+            override fun onDismissed(snackbar: Snackbar?, event: Int) {
+                if (event == DISMISS_EVENT_ACTION) {
+                    return
+                }
+                Timber.d("User didn't cancel 'zzz'. Drowsing apps...")
+                AppsManager(applicationContext).forceStopApps()
+            }
+        })
+        snackbar.show()
     }
 }
