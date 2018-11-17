@@ -13,6 +13,7 @@ import android.os.PowerManager
 import android.support.v4.app.NotificationCompat
 import com.jarsilio.android.drowser.MainActivity
 import com.jarsilio.android.drowser.R
+import com.jarsilio.android.drowser.models.AppsManager
 import com.jarsilio.android.drowser.prefs.Prefs
 import timber.log.Timber
 
@@ -47,6 +48,18 @@ class DrowserService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Timber.d("onStartCommand called")
+        val action = intent?.action
+        if (action != null) {
+            Timber.d("Received Start Foreground Intent: %s", action)
+            when (action) {
+                DROWSE_ACTION -> {
+                    Timber.d("Drowsing apps (from notification action)")
+                    AppsManager(this).forceStopApps()
+                }
+            }
+        }
+
         if (shouldStartForegroundService(this)) {
             startForegroundService()
         }
@@ -71,6 +84,12 @@ class DrowserService : Service() {
                 .setContentTitle(getString(R.string.notification_drowser_running))
                 .setTicker(getString(R.string.notification_drowser_running))
 
+        val drowseIntent = Intent(this, DrowserService::class.java)
+        drowseIntent.action = DROWSE_ACTION
+        val drowsePendingIntent = PendingIntent.getService(this, 0, drowseIntent, 0)
+
+        notificationBuilder.addAction(0, getString(R.string.menu_item_zzz), drowsePendingIntent)
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel("persistent", getString(R.string.notification_persistent), NotificationManager.IMPORTANCE_NONE)
             notificationChannel.description = getString(R.string.notification_persistent_channel_description)
@@ -83,6 +102,8 @@ class DrowserService : Service() {
 
     companion object {
         private const val FOREGROUND_ID = 10001
+
+        const val DROWSE_ACTION = "DROWSE_ACTION"
 
         const val BATTERY_OPTIMIZATION_REQUEST_CODE = 20002
 
