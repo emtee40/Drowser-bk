@@ -22,6 +22,8 @@
     <!-- Prefs -->
     <string name="prefs_category_service">Service</string>
     <string name="pref_enable">Enabled</string>
+    <string name="pref_drowse_foreground_app">Drowse foreground app</string>
+    <string name="pref_drowse_foreground_app_summary">Drowse the app that is currently running in the foreground when the screen turns off.</string>
 
     <string name="prefs_category_notification">Notifications</string>
     <string name="pref_show_notification">Show notification</string>
@@ -81,6 +83,7 @@
     <!-- pref id's -->
     <string name="pref_enabled_key" translatable="false">pref_enabled</string>
     <string name="pref_notification_key" translatable="false">pref_notification</string>
+    <string name="pref_drowse_foreground_app_key" translatable="false">pref_drowse_foreground_app</string>
     <!-- automagic pref id's -->
     <string name="pref_request_root_access_key" translatable="false">pref_request_root_access</string>
     <string name="pref_disable_until_key" translatable="false">pref_disable_until</string>

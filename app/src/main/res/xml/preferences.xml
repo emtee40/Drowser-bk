@@ -7,6 +7,11 @@
         android:key="@string/pref_enabled_key"
         android:title="@string/pref_enable"
         android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="@string/pref_drowse_foreground_app_key"
+        android:title="@string/pref_drowse_foreground_app"
+        android:summary="@string/pref_drowse_foreground_app_summary"
+        android:defaultValue="true" />
 </PreferenceCategory>
 <PreferenceCategory
     android:key="prefs_category_notification"

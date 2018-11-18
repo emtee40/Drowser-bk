@@ -1,10 +1,14 @@
 package com.jarsilio.android.drowser.models
 
+import android.annotation.SuppressLint
+import android.app.ActivityManager
+import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.os.Build
 import com.jarsilio.android.drowser.R
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
@@ -15,6 +19,28 @@ class AppsManager(private val context: Context) {
     private val SERVICE_RECORD_MATCH = Regex("\\s*\\* ServiceRecord\\{.+ (.+)\\}.*") // Example:  * ServiceRecord{aad95cb u0 com.whatsapp/.gcm.RegistrationIntentService}
     private val appItemsDao = AppDatabase.getInstance(context.applicationContext).appItemsDao()
     private val prefs = Prefs.getInstance(context)
+
+    private fun getForegroundPackageName(): String {
+        var lastUsedPackage = ""
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            @SuppressLint("WrongConstant")
+            val usageStatsManager = context.getSystemService("usagestats") as UsageStatsManager
+            val now = System.currentTimeMillis()
+            val usageStatsList = usageStatsManager?.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, now - 1000 * 1000, now)
+            var lastTimeUsed: Long = 0
+            for (usageStats in usageStatsList) {
+                if (usageStats.lastTimeUsed > lastTimeUsed) {
+                    lastTimeUsed = usageStats.lastTimeUsed
+                    lastUsedPackage = usageStats.packageName
+                }
+            }
+        } else {
+            val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val tasks = activityManager.runningAppProcesses
+            lastUsedPackage = tasks[0].processName
+        }
+        return lastUsedPackage
+    }
 
     fun forceStopApps() {
         if (!Shell.SU.available()) {
@@ -30,7 +56,15 @@ class AppsManager(private val context: Context) {
 
         Thread(Runnable {
             Timber.v("Preparing shell commands:")
+            val foregroundApp = getForegroundPackageName()
+            if (!prefs.drowseForegroundApp) {
+                Timber.d("App running in foreground: $foregroundApp")
+            }
             for (appItem in appItemsDao.drowseCandidates) { // in separate thread because of database access
+                if (!prefs.drowseForegroundApp && appItem.packageName == foregroundApp) {
+                    Timber.d("-> Not force-stopping $foregroundApp because 'Stop foreground app' option is disabled.")
+                    continue
+                }
                 val command = "am force-stop ${appItem.packageName}"
                 commands.add(command)
                 Timber.v("-> $command")

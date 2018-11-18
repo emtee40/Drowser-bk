@@ -10,6 +10,7 @@ import android.provider.Settings
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
 import com.jarsilio.android.drowser.services.DrowserService.Companion.BATTERY_OPTIMIZATION_REQUEST_CODE
+import com.jarsilio.android.drowser.services.DrowserService.Companion.USAGE_ACCESS_REQUEST_CODE
 import timber.log.Timber
 
 class PreferencesActivity : Activity(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -53,6 +54,11 @@ class PreferencesActivity : Activity(), SharedPreferences.OnSharedPreferenceChan
                     DrowserService.restartService(this)
                 }
             }
+            prefs.DROWSE_FOREGROUND_APP -> {
+                if (!prefs.drowseForegroundApp && !DrowserService.isUsageAccessAllowed(this)) {
+                    startActivityForResult(Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS), USAGE_ACCESS_REQUEST_CODE)
+                }
+            }
         }
     }
 
@@ -67,8 +73,14 @@ class PreferencesActivity : Activity(), SharedPreferences.OnSharedPreferenceChan
                     DrowserService.restartService(this)
                 }
             }
+            USAGE_ACCESS_REQUEST_CODE -> {
+                if (!prefs.drowseForegroundApp && !DrowserService.isUsageAccessAllowed(this)) {
+                    prefs.drowseForegroundApp = true
+                }
+            }
         }
     }
+
     class PrefsFragment : PreferenceFragment() {
 
         override fun onCreate(savedInstanceState: Bundle?) {

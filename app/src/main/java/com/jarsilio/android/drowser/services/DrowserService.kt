@@ -1,5 +1,6 @@
 package com.jarsilio.android.drowser.services
 
+import android.app.AppOpsManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -7,6 +8,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
@@ -106,6 +108,7 @@ class DrowserService : Service() {
         const val DROWSE_ACTION = "DROWSE_ACTION"
 
         const val BATTERY_OPTIMIZATION_REQUEST_CODE = 20002
+        const val USAGE_ACCESS_REQUEST_CODE = 20202
 
         fun startService(context: Context) {
             val prefs = Prefs.getInstance(context)
@@ -143,6 +146,27 @@ class DrowserService : Service() {
                 isIgnoringBatteryOptimizations = true
             }
             return isIgnoringBatteryOptimizations
+        }
+
+        fun isUsageAccessAllowed(context: Context): Boolean {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                try {
+                    val packageManager = context.packageManager
+                    val applicationInfo = packageManager.getApplicationInfo(context.packageName, 0)
+                    val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+                    val mode: Int
+                    mode = appOpsManager?.checkOpNoThrow(
+                            AppOpsManager.OPSTR_GET_USAGE_STATS,
+                            applicationInfo.uid,
+                            applicationInfo.packageName
+                    )
+                    return mode == AppOpsManager.MODE_ALLOWED
+                } catch (e: PackageManager.NameNotFoundException) {
+                    return false
+                }
+            } else {
+                return true
+            }
         }
 
         private fun shouldStartForegroundService(context: Context): Boolean {
