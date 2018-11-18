@@ -4,12 +4,9 @@ import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.app.usage.UsageStatsManager
 import android.content.Context
-import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
 import android.os.Build
-import com.jarsilio.android.drowser.R
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
 import eu.chainfire.libsuperuser.Shell
@@ -118,11 +115,22 @@ class AppsManager(private val context: Context) {
             val name = packageManager.getApplicationLabel(applicationInfo).toString()
             val isSystem = applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0
             val isDrowseCandidate = false
+            val show = !isSystem || prefs.showSystemApps
 
-            val appItem = AppItem(packageName, name, isSystem, isDrowseCandidate)
+            val appItem = AppItem(packageName, name, isSystem, isDrowseCandidate, show)
             Timber.v("-> $appItem")
             appItemsDao.insertIfNotExists(appItem) // If not exists because there might be apps that expose more than one launcher
         }
+    }
+
+    fun updateAppItemsVisibility() {
+        Thread(Runnable {
+            if (prefs.showSystemApps) {
+                appItemsDao.showSystemApps()
+            } else {
+                appItemsDao.hideSystemApps()
+            }
+        }).start()
     }
 
     private fun removeObsoleteAppItemsFromDatabase() {

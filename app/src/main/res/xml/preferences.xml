@@ -14,6 +14,15 @@
         android:defaultValue="true" />
 </PreferenceCategory>
 <PreferenceCategory
+    android:key="prefs_category_app_list"
+    android:title="@string/prefs_category_app_list"
+    android:dependency="@string/pref_enabled_key">
+    <CheckBoxPreference
+        android:key="@string/pref_drowse_show_system_apps_key"
+        android:title="@string/pref_drowse_show_system_apps"
+        android:defaultValue="false" />
+</PreferenceCategory>
+<PreferenceCategory
     android:key="prefs_category_notification"
     android:title="@string/prefs_category_notification"
     android:dependency="@string/pref_enabled_key">

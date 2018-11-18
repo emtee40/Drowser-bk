@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.provider.Settings
+import com.jarsilio.android.drowser.models.AppsManager
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
 import com.jarsilio.android.drowser.services.DrowserService.Companion.BATTERY_OPTIMIZATION_REQUEST_CODE
@@ -59,6 +60,7 @@ class PreferencesActivity : Activity(), SharedPreferences.OnSharedPreferenceChan
                     startActivityForResult(Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS), USAGE_ACCESS_REQUEST_CODE)
                 }
             }
+            prefs.SHOW_SYSTEM_APPS -> AppsManager(this).updateAppItemsVisibility()
         }
     }
 

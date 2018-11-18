@@ -18,6 +18,7 @@ class Prefs private constructor(context: Context) {
     val IS_ENABLED: String = context.getString(R.string.pref_enabled_key)
     val SHOW_NOTIFICATION: String = context.getString(R.string.pref_notification_key)
     val DROWSE_FOREGROUND_APP: String = context.getString(R.string.pref_drowse_foreground_app_key)
+    val SHOW_SYSTEM_APPS: String = context.getString(R.string.pref_drowse_show_system_apps_key)
 
     var isEnabled: Boolean
         get() = prefs.getBoolean(IS_ENABLED, true)
@@ -30,6 +31,10 @@ class Prefs private constructor(context: Context) {
     var drowseForegroundApp: Boolean
         get() = prefs.getBoolean(DROWSE_FOREGROUND_APP, true)
         set(value) = setBooleanPreference(DROWSE_FOREGROUND_APP, value)
+
+    var showSystemApps: Boolean
+        get() = prefs.getBoolean(SHOW_SYSTEM_APPS, false)
+        set(value) = setBooleanPreference(SHOW_SYSTEM_APPS, value)
 
     /* Automagic prefs: these are not real prefs. They are just set by the app to remember stuff */
     val REQUEST_ROOT_ACCESS: String = context.getString(R.string.pref_request_root_access_key)

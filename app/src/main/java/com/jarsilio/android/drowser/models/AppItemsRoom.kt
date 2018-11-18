@@ -16,13 +16,16 @@ import android.graphics.drawable.Drawable
 import timber.log.Timber
 import android.arch.persistence.room.Room
 import android.arch.lifecycle.LiveData
+import android.arch.persistence.db.SupportSQLiteDatabase
+import android.arch.persistence.room.migration.Migration
 
 @Entity
 data class AppItem(
     @PrimaryKey var packageName: String,
     var name: String,
     var isSystem: Boolean,
-    var isDrowseCandidate: Boolean
+    var isDrowseCandidate: Boolean,
+    var show: Boolean
 ) {
 
     fun getIcon(context: Context): Drawable? {
@@ -58,10 +61,10 @@ interface AppItemsDao : BaseDao<AppItem> {
     @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 1 ORDER BY name COLLATE UNICODE")
     val drowseCandidates: List<AppItem>
 
-    @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 1 ORDER BY name COLLATE UNICODE")
+    @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 1 AND show = 1 ORDER BY name COLLATE UNICODE")
     val drowseCandidatesLive: LiveData<List<AppItem>>
 
-    @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 0 ORDER BY name COLLATE UNICODE")
+    @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 0 AND show = 1 ORDER BY name COLLATE UNICODE")
     val nonDrowseCandidatesLive: LiveData<List<AppItem>>
 
     @Query("SELECT * FROM appitem WHERE packageName IN (:packageNames)")
@@ -72,13 +75,27 @@ interface AppItemsDao : BaseDao<AppItem> {
 
     @Query("UPDATE AppItem SET isDrowseCandidate = :isDrowseCandidate WHERE packageName = :packageName")
     fun setDrowseCandidate(packageName: String, isDrowseCandidate: Boolean)
+
+    @Query("UPDATE AppItem SET show = 1 WHERE isSystem = 1")
+    fun showSystemApps()
+
+    @Query("UPDATE AppItem SET show = 0 WHERE isSystem = 1")
+    fun hideSystemApps()
 }
 
-@Database(entities = arrayOf(AppItem::class), version = 1)
+@Database(entities = arrayOf(AppItem::class), version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun appItemsDao(): AppItemsDao
 
     companion object : SingletonHolder<AppDatabase, Context>({
-        Room.databaseBuilder(it.applicationContext, AppDatabase::class.java, "AppItems").build()
+        Room.databaseBuilder(it.applicationContext, AppDatabase::class.java, "AppItems")
+                .addMigrations(MIGRATION_1_2)
+                .build()
     })
+}
+
+val MIGRATION_1_2: Migration = object : Migration(1, 2) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE appitem ADD COLUMN show INTEGER NOT NULL DEFAULT 1")
+    }
 }
