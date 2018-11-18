@@ -102,20 +102,21 @@ class AppsManager(private val context: Context) {
 
     private fun addNewAppItemsToDatabase() {
         Timber.d("Adding new apps to database")
-        val intent = Intent(Intent.ACTION_MAIN, null)
-        intent.addCategory(Intent.CATEGORY_LAUNCHER)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
-        val resolveInfoList = context.packageManager.queryIntentActivities(intent, 0)
-        for (resolveInfo in resolveInfoList) {
-            val packageName = resolveInfo.activityInfo.applicationInfo.packageName
+        val packageManager = context.packageManager
+        val packages = packageManager.getInstalledPackages(PackageManager.GET_SIGNATURES)
+
+        for (packageInfo in packages) {
+            val applicationInfo = packageInfo.applicationInfo ?: continue
+
+            val packageName = applicationInfo.packageName
             val appAlreadyInDatabase = appItemsDao.loadByPackageName(packageName) != null
 
             if (appAlreadyInDatabase || packageName == context.packageName) {
                 continue
             }
 
-            val name = getAppName(packageName)
-            val isSystem = isSystemPackage(resolveInfo)
+            val name = packageManager.getApplicationLabel(applicationInfo).toString()
+            val isSystem = applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0
             val isDrowseCandidate = false
 
             val appItem = AppItem(packageName, name, isSystem, isDrowseCandidate)
@@ -141,19 +142,5 @@ class AppsManager(private val context: Context) {
         } catch (e: PackageManager.NameNotFoundException) {
             false
         }
-    }
-
-    private fun getAppName(packageName: String): String {
-        return try {
-            val applicationInfo = context.packageManager.getApplicationInfo(packageName, 0)
-            context.packageManager.getApplicationLabel(applicationInfo) as String
-        } catch (e: PackageManager.NameNotFoundException) {
-            Timber.e(e)
-            context.getString(R.string.untitled_app)
-        }
-    }
-
-    private fun isSystemPackage(resolveInfo: ResolveInfo): Boolean {
-        return resolveInfo.activityInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0
     }
 }
