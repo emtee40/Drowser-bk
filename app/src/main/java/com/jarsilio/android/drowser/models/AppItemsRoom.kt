@@ -64,15 +64,6 @@ interface AppItemsDao : BaseDao<AppItem> {
     @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 0 ORDER BY name COLLATE UNICODE")
     val nonDrowseCandidatesLive: LiveData<List<AppItem>>
 
-    @get:Query("SELECT * FROM appitem WHERE isSystem = 0 ORDER BY name COLLATE UNICODE")
-    val userApps: List<AppItem>
-
-    @get:Query("SELECT * FROM appitem WHERE isSystem = 0 ORDER BY name COLLATE UNICODE")
-    val userAppsLive: LiveData<List<AppItem>>
-
-    @get:Query("SELECT * FROM appitem WHERE isSystem = 1 ORDER BY name COLLATE UNICODE")
-    val systemApps: List<AppItem>
-
     @Query("SELECT * FROM appitem WHERE packageName IN (:packageNames)")
     fun loadAllByPackageNames(packageNames: List<String>): List<AppItem>
 
