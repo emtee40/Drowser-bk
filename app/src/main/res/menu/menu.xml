@@ -29,4 +29,8 @@
         android:title="@string/menu_item_settings"
         android:orderInCategory="350"
         app:showAsAction="never" />
+    <item android:id="@+id/action_search"
+        android:title="SearchTODO"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always"/>
 </menu>
