@@ -154,8 +154,8 @@ class MainActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
                 .setTitle("Disable drowsing apps for")
                 .setSingleChoiceItems(timeoutStrings, prefs.lastDisableUntilUserChoice) { dialog, which ->
-                    prefs.lastDisableUntilUserChoice = which
-                    prefs.disableUntil = Timeout.values()[which].disableUntil
+                    prefs.lastDisableUntilUserChoice = which + 1 // To skip NO_TIMEOUT
+                    prefs.disableUntil = Timeout.values()[which + 1].disableUntil
                     Timber.d("Temporarily disabling Drowser until ${Utils.getReadableDate(prefs.disableUntil)}")
                     Snackbar.make(findViewById<View>(R.id.main_content),
                             getString(R.string.snackbar_disabled_until, Utils.getReadableTime(prefs.disableUntil)),
