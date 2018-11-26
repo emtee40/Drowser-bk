@@ -78,6 +78,7 @@
     <string name="timeout_no_timeout">no timeout</string>
     <string name="timeout_one_minute">1 minute</string>
     <string name="timeout_five_minutes">5 minutes</string>
+    <string name="timeout_ten_minutes">10 minutes</string>
     <string name="timeout_thirty_minutes">30 minutes</string>
     <string name="timeout_one_hour">1 hour</string>
     <string name="timeout_two_hours">2 hours</string>

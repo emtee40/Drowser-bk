@@ -179,6 +179,7 @@ enum class Timeout(val millis: Long, val resourceId: Int) {
     NO_TIMEOUT(0, R.string.timeout_no_timeout),
     ONE_MINUTE(1 * 60 * 1000, R.string.timeout_one_minute),
     FIVE_MINUTES(5 * 60 * 1000, R.string.timeout_five_minutes),
+    TEN_MINUTES(10 * 60 * 1000, R.string.timeout_ten_minutes),
     THIRTY_MINUTES(30 * 60 * 1000, R.string.timeout_thirty_minutes),
     ONE_HOUR(1 * 60 * 60 * 1000, R.string.timeout_one_hour),
     TWO_HOURS(2 * 60 * 60 * 1000, R.string.timeout_two_hours),
