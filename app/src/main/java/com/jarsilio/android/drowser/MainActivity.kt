@@ -17,7 +17,6 @@ import android.view.View
 import com.jarsilio.android.drowser.adapters.AppItemListAdapter
 import com.jarsilio.android.drowser.models.AppDatabase
 import com.jarsilio.android.drowser.models.AppItem
-import com.jarsilio.android.drowser.models.AppItemsDao
 import com.jarsilio.android.drowser.models.AppItemsViewModel
 import com.jarsilio.android.drowser.models.AppsManager
 import com.jarsilio.android.drowser.models.EmptyRecyclerView
@@ -33,13 +32,9 @@ import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     private lateinit var prefs: Prefs
-    private lateinit var appsManager: AppsManager
-    private lateinit var appItemsDao: AppItemsDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         prefs = Prefs.getInstance(this)
-        appsManager = AppsManager(this)
-        appItemsDao = AppDatabase.getInstance(this).appItemsDao()
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -60,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         val nonDrowseCandidatesListAdapter = AppItemListAdapter()
         nonDrowseCandidatesRecyclerView.adapter = nonDrowseCandidatesListAdapter
 
+        val appItemsDao = AppDatabase.getInstance(this).appItemsDao()
         val viewModel = ViewModelProviders.of(this).get(AppItemsViewModel::class.java)
         viewModel.getDrowseCandidates(appItemsDao)
                 .observe(this,
@@ -123,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                     .setCancelable(false)
                     .show()
         } else {
-            appsManager.updateAppItemsDatabase()
+            AppsManager(this).updateAppItemsDatabase()
             prefs.requestRootAccess = false
             DrowserService.startService(this)
         }
