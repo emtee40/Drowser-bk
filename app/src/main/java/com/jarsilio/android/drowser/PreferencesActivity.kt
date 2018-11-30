@@ -20,19 +20,19 @@ class PreferencesActivity : Activity(), SharedPreferences.OnSharedPreferenceChan
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         prefs = Prefs.getInstance(this)
-        prefs.prefs.registerOnSharedPreferenceChangeListener(this)
-        prefs.preferencesActivity = this
         // Display the fragment as the main content.
         fragmentManager.beginTransaction().replace(android.R.id.content, PrefsFragment()).commit()
     }
 
     override fun onResume() {
         super.onResume()
+        prefs.preferencesActivity = this
         prefs.prefs.registerOnSharedPreferenceChangeListener(this)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
+        prefs.preferencesActivity = null // Avoid leak by not keeping a reference to PreferenceActivity in the Prefs singleton
         prefs.prefs.unregisterOnSharedPreferenceChangeListener(this)
     }
 
