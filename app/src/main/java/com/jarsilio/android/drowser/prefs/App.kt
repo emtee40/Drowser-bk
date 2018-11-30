@@ -2,6 +2,7 @@ package com.jarsilio.android.drowser.prefs
 
 import android.app.Application
 import android.os.Build
+import com.squareup.leakcanary.LeakCanary
 
 import timber.log.Timber
 
@@ -11,6 +12,13 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(LongTagTree(packageName))
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return
+        }
+        LeakCanary.install(this)
     }
 
     inner class LongTagTree(private val packageName: String) : Timber.DebugTree() {
