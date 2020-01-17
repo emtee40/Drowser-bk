@@ -8,6 +8,7 @@
     card_view:contentPadding="5dp"
     card_view:cardCornerRadius="5dp"
     card_view:cardMaxElevation="5dp"
+    card_view:cardBackgroundColor="@color/cardColor"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:layout_margin="5dp">
@@ -25,7 +26,7 @@
             android:layout_toEndOf="@id/app_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000"
+            android:textColor="?android:attr/textColorPrimary"
             android:layout_marginTop="6dp"
             android:layout_marginLeft="4dp" />
         <TextView

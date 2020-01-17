@@ -22,6 +22,7 @@
                 android:gravity="center_vertical"
                 android:paddingBottom="10dp"
                 android:text="@string/drowse_candidates_section_title"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
         <include layout="@layout/empty_view_card" />
@@ -37,6 +38,7 @@
                 android:gravity="center_vertical"
                 android:paddingBottom="10dp"
                 android:text="@string/non_drowse_candidates_section_title"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_non_drowse_candidates"

@@ -20,6 +20,8 @@ class App : Application() {
             return
         }
         LeakCanary.install(this)
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
 
     inner class LongTagTree(private val packageName: String) : Timber.DebugTree() {

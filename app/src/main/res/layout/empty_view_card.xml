@@ -9,11 +9,12 @@
         card_view:cardElevation="5dp"
         card_view:contentPadding="5dp"
         card_view:cardCornerRadius="5dp"
-        card_view:cardMaxElevation="5dp">
+        card_view:cardMaxElevation="5dp"
+        card_view:cardBackgroundColor="@color/cardColor">
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:textColor="@android:color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:text="@string/drower_candidates_empty_text"/>
 </androidx.cardview.widget.CardView>
