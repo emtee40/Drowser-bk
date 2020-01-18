@@ -24,7 +24,7 @@ import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
 import com.jarsilio.android.drowser.services.Timeout
 import com.jarsilio.android.drowser.utils.Utils
-import com.jarsilio.android.privacypolicy.PrivacyPolicyBuilder
+import com.jarsilio.android.common.privacypolicy.PrivacyPolicyBuilder
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.LibsBuilder
 import eu.chainfire.libsuperuser.Shell

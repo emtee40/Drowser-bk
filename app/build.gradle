@@ -37,7 +37,8 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
-    implementation project(path: ':privacypolicy')
+    // my libcommon (as module)
+    implementation project(path: ':common')
     implementation "com.mikepenz:aboutlibraries:6.1.1"
     // Chainfire's libsuperuser
     implementation 'eu.chainfire:libsuperuser:1.0.0.201704021214'
