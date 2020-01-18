@@ -66,7 +66,7 @@ class DrowserService : Service() {
             startForegroundService()
         }
 
-        return Service.START_STICKY
+        return START_STICKY
     }
 
     private fun startForegroundService() {
@@ -92,7 +92,7 @@ class DrowserService : Service() {
 
         notificationBuilder.addAction(0, getString(R.string.menu_item_zzz), drowsePendingIntent)
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel("persistent", getString(R.string.notification_persistent), NotificationManager.IMPORTANCE_NONE)
             notificationChannel.description = getString(R.string.notification_persistent_channel_description)
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -114,7 +114,7 @@ class DrowserService : Service() {
             val prefs = Prefs.getInstance(context)
             if (prefs.isEnabled) {
                 Timber.i("Starting Drowser")
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                     shouldStartForegroundService(context)) {
                     Timber.d("Starting service with context.startForegroundService (Android >= Oreo and battery optimization on)")
                     context.startForegroundService(Intent(context, DrowserService::class.java))
@@ -139,7 +139,7 @@ class DrowserService : Service() {
 
         fun isIgnoringBatteryOptimizations(context: Context): Boolean {
             val isIgnoringBatteryOptimizations: Boolean
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
                 isIgnoringBatteryOptimizations = powerManager.isIgnoringBatteryOptimizations(context.packageName)
             } else {
@@ -149,7 +149,7 @@ class DrowserService : Service() {
         }
 
         fun isUsageAccessAllowed(context: Context): Boolean {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 try {
                     val packageManager = context.packageManager
                     val applicationInfo = packageManager.getApplicationInfo(context.packageName, 0)

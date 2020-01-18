@@ -1,30 +1,26 @@
 package com.jarsilio.android.drowser
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.cardview.widget.CardView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+import com.jarsilio.android.common.privacypolicy.PrivacyPolicyBuilder
 import com.jarsilio.android.drowser.adapters.AppItemListAdapter
-import com.jarsilio.android.drowser.models.AppDatabase
-import com.jarsilio.android.drowser.models.AppItem
-import com.jarsilio.android.drowser.models.AppItemsViewModel
-import com.jarsilio.android.drowser.models.AppsManager
-import com.jarsilio.android.drowser.models.EmptyRecyclerView
+import com.jarsilio.android.drowser.models.*
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
 import com.jarsilio.android.drowser.services.Timeout
 import com.jarsilio.android.drowser.utils.Utils
-import com.jarsilio.android.common.privacypolicy.PrivacyPolicyBuilder
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.LibsBuilder
 import eu.chainfire.libsuperuser.Shell
@@ -43,15 +39,15 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
 
-        val drowseCandidatesRecyclerView = findViewById<EmptyRecyclerView>(R.id.recycler_drowse_candidates) as EmptyRecyclerView
-        val emptyView = findViewById<androidx.cardview.widget.CardView>(R.id.empty_view)
+        val drowseCandidatesRecyclerView = findViewById(R.id.recycler_drowse_candidates) as EmptyRecyclerView
+        val emptyView = findViewById<CardView>(R.id.empty_view)
         drowseCandidatesRecyclerView.setEmptyView(emptyView)
-        drowseCandidatesRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        drowseCandidatesRecyclerView.layoutManager = LinearLayoutManager(this)
         val drowseCandidatesListAdapter = AppItemListAdapter()
         drowseCandidatesRecyclerView.adapter = drowseCandidatesListAdapter
 
-        val nonDrowseCandidatesRecyclerView = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recycler_non_drowse_candidates) as androidx.recyclerview.widget.RecyclerView
-        nonDrowseCandidatesRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        val nonDrowseCandidatesRecyclerView = findViewById(R.id.recycler_non_drowse_candidates) as RecyclerView
+        nonDrowseCandidatesRecyclerView.layoutManager = LinearLayoutManager(this)
         val nonDrowseCandidatesListAdapter = AppItemListAdapter()
         nonDrowseCandidatesRecyclerView.adapter = nonDrowseCandidatesListAdapter
 
@@ -153,9 +149,9 @@ class MainActivity : AppCompatActivity() {
                     prefs.lastDisableUntilUserChoice = which
                     prefs.disableUntil = Timeout.values()[which + 1].disableUntil // To skip NO_TIMEOUT
                     Timber.d("Temporarily disabling Drowser until ${Utils.getReadableDate(prefs.disableUntil)}")
-                    com.google.android.material.snackbar.Snackbar.make(findViewById<View>(R.id.main_content),
+                    Snackbar.make(findViewById<View>(R.id.main_content),
                             getString(R.string.snackbar_disabled_until, Utils.getReadableTime(prefs.disableUntil)),
-                            com.google.android.material.snackbar.Snackbar.LENGTH_LONG).show()
+                            Snackbar.LENGTH_LONG).show()
                     dialog.dismiss()
                     invalidateOptionsMenu() // force onPrepareOptionsMenu
                 }
@@ -166,20 +162,20 @@ class MainActivity : AppCompatActivity() {
     private fun reEnable() {
         prefs.disableUntil = 0
         invalidateOptionsMenu() // force onPrepareOptionsMenu
-        com.google.android.material.snackbar.Snackbar.make(findViewById<View>(R.id.main_content),
+        Snackbar.make(findViewById<View>(R.id.main_content),
                 getString(R.string.snackbar_reenabled),
-                com.google.android.material.snackbar.Snackbar.LENGTH_LONG).show()
+                Snackbar.LENGTH_LONG).show()
     }
 
     private fun drowseNow() {
-        val snackbar = com.google.android.material.snackbar.Snackbar.make(findViewById<View>(R.id.main_content),
+        val snackbar = Snackbar.make(findViewById<View>(R.id.main_content),
                 getString(R.string.snackbar_zzz),
-                com.google.android.material.snackbar.Snackbar.LENGTH_LONG)
+                Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo) {
                     Timber.d("User canceled 'zzz'. Not drowsing apps...")
                 }
-        snackbar.addCallback(object : com.google.android.material.snackbar.Snackbar.Callback() {
-            override fun onDismissed(snackbar: com.google.android.material.snackbar.Snackbar?, event: Int) {
+        snackbar.addCallback(object : Snackbar.Callback() {
+            override fun onDismissed(snackbar: Snackbar?, event: Int) {
                 if (event == DISMISS_EVENT_ACTION) {
                     return
                 }

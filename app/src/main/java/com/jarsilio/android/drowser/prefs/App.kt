@@ -25,7 +25,7 @@ class App : Application() {
     inner class LongTagTree(private val packageName: String) : Timber.DebugTree() {
         private fun getMessage(tag: String?, message: String): String {
             val longTagTreeMessage: String
-            if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
                 // Tag length limitation (<23): Use truncated package name and add class name to message
                 longTagTreeMessage = "$tag: $message"
             } else {
@@ -37,7 +37,7 @@ class App : Application() {
 
         private fun getTag(tag: String?): String {
             var longTagTreeTag: String
-            if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
                 // Tag length limitation (<23): Use truncated package name and add class name to message
                 longTagTreeTag = packageName
                 if (longTagTreeTag.length > MAX_TAG_LENGTH) {

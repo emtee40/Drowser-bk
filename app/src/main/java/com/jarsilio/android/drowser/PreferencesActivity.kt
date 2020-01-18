@@ -57,7 +57,7 @@ class PreferencesActivity : Activity(), SharedPreferences.OnSharedPreferenceChan
             }
             prefs.DROWSE_FOREGROUND_APP -> {
                 if (!prefs.drowseForegroundApp && !DrowserService.isUsageAccessAllowed(this)) {
-                    startActivityForResult(Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS), USAGE_ACCESS_REQUEST_CODE)
+                    startActivityForResult(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), USAGE_ACCESS_REQUEST_CODE)
                 }
             }
             prefs.SHOW_SYSTEM_APPS -> AppsManager(this).updateAppItemsVisibility()

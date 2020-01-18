@@ -66,7 +66,7 @@ class AppDrowserJobIntentService : JobIntentService() {
             return true // Assume screen is on to not kill any apps the user might be using (this could be impolite, but I prefer to make sure the apps are drowsed)
         }
 
-        return if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
             powerManager.isInteractive
         } else {
             powerManager.isScreenOn
@@ -77,7 +77,7 @@ class AppDrowserJobIntentService : JobIntentService() {
         private val JOB_ID = 1000
 
         fun enqueueWork(context: Context, intent: Intent) {
-            JobIntentService.enqueueWork(context, AppDrowserJobIntentService::class.java, JOB_ID, intent)
+            enqueueWork(context, AppDrowserJobIntentService::class.java, JOB_ID, intent)
         }
     }
 }

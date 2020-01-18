@@ -19,7 +19,7 @@ class AppsManager(private val context: Context) {
 
     private fun getForegroundPackageName(): String {
         var lastUsedPackage = ""
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             @SuppressLint("WrongConstant")
             val usageStatsManager = context.getSystemService("usagestats") as UsageStatsManager
             val now = System.currentTimeMillis()
@@ -74,7 +74,7 @@ class AppsManager(private val context: Context) {
     }
 
     fun getActiveServices(packageName: String): List<String> {
-        val activeServices: MutableList<String> = mutableListOf<String>()
+        val activeServices: MutableList<String> = mutableListOf()
         val dumpsysServicesOutput = Shell.SU.run("dumpsys activity services $packageName")
         for (line in dumpsysServicesOutput) {
             if (line.matches(SERVICE_RECORD_MATCH)) {
