@@ -19,7 +19,7 @@
 package com.jarsilio.android.drowser.models
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 
@@ -50,7 +50,7 @@ class EmptyRecyclerView : RecyclerView {
         }
     }
 
-    override fun setAdapter(adapter: RecyclerView.Adapter<*>?) {
+    override fun setAdapter(adapter: Adapter<*>?) {
         val oldAdapter = getAdapter()
         oldAdapter?.unregisterAdapterDataObserver(observer)
 
@@ -59,7 +59,7 @@ class EmptyRecyclerView : RecyclerView {
         checkIfEmptyAndToggleVisibility()
     }
 
-    override fun swapAdapter(adapter: RecyclerView.Adapter<*>?, removeAndRecycleExistingViews: Boolean) {
+    override fun swapAdapter(adapter: Adapter<*>?, removeAndRecycleExistingViews: Boolean) {
         val oldAdapter = getAdapter()
         oldAdapter?.unregisterAdapterDataObserver(observer)
 
@@ -88,7 +88,7 @@ class EmptyRecyclerView : RecyclerView {
             return
         }
 
-        if (adapter.itemCount > 0) {
+        if (adapter!!.itemCount > 0) {
             emptyView!!.visibility = View.GONE
         } else {
             emptyView!!.visibility = View.VISIBLE

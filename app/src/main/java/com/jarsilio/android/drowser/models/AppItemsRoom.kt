@@ -1,23 +1,23 @@
 package com.jarsilio.android.drowser.models
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.Delete
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.PrimaryKey
-import android.arch.persistence.room.Query
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.Update
+import androidx.room.Dao
+import androidx.room.Database
+import androidx.room.Delete
+import androidx.room.Entity
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.PrimaryKey
+import androidx.room.Query
+import androidx.room.RoomDatabase
+import androidx.room.Update
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import timber.log.Timber
-import android.arch.persistence.room.Room
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.db.SupportSQLiteDatabase
-import android.arch.persistence.room.migration.Migration
+import androidx.room.Room
+import androidx.lifecycle.LiveData
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.room.migration.Migration
 
 @Entity
 data class AppItem(

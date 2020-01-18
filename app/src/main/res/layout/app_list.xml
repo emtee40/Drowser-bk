@@ -1,4 +1,4 @@
-<android.support.v4.widget.NestedScrollView
+<androidx.core.widget.NestedScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:card_view="http://schemas.android.com/tools"
         android:id="@+id/activity_exclude_apps"
@@ -38,9 +38,9 @@
                 android:paddingBottom="10dp"
                 android:text="@string/non_drowse_candidates_section_title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_non_drowse_candidates"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
     </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>

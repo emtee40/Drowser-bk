@@ -12,7 +12,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
-import android.support.v4.app.NotificationCompat
+import androidx.core.app.NotificationCompat
 import com.jarsilio.android.drowser.MainActivity
 import com.jarsilio.android.drowser.R
 import com.jarsilio.android.drowser.models.AppsManager

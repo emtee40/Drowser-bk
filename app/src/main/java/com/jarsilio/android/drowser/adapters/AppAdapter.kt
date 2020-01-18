@@ -1,10 +1,10 @@
 package com.jarsilio.android.drowser.adapters
 
-import android.support.design.widget.Snackbar
-import android.support.v7.recyclerview.extensions.ListAdapter
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -79,11 +79,11 @@ class AppItemHolder(view: View) : RecyclerView.ViewHolder(view) {
 }
 
 class AppItemDiffCallback : DiffUtil.ItemCallback<AppItem>() {
-    override fun areItemsTheSame(oldItem: AppItem?, newItem: AppItem?): Boolean {
-        return oldItem?.packageName == newItem?.packageName
+    override fun areItemsTheSame(oldItem: AppItem, newItem: AppItem): Boolean {
+        return oldItem.packageName == newItem.packageName
     }
 
-    override fun areContentsTheSame(oldItem: AppItem?, newItem: AppItem?): Boolean {
+    override fun areContentsTheSame(oldItem: AppItem, newItem: AppItem): Boolean {
         return oldItem == newItem
     }
 }

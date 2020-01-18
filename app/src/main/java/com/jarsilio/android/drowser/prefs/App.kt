@@ -2,6 +2,7 @@ package com.jarsilio.android.drowser.prefs
 
 import android.app.Application
 import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
 import com.squareup.leakcanary.LeakCanary
 
 import timber.log.Timber
