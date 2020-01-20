@@ -1,0 +1,13 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="drowse_now"
+        android:enabled="true"
+        android:icon="@mipmap/drowse_apps_shortcut_icon"
+        android:shortcutShortLabel="@string/shortcut_drowse_all"
+        android:shortcutLongLabel="@string/shortcut_drowse_all">
+        <intent
+            android:action="com.jarsilio.android.drowser.action.DROWSE_NOW"
+            android:targetPackage="com.jarsilio.android.drowser"
+            android:targetClass="com.jarsilio.android.drowser.services.ShortcutActivity" />
+    </shortcut>
+</shortcuts>

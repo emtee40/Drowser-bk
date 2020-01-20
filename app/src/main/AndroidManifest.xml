@@ -24,12 +24,18 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".PreferencesActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
+        <activity
+            android:name=".services.ShortcutActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        </activity>
         <service
             android:name=".services.DrowserService"
             android:enabled="true"
