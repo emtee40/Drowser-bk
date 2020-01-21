@@ -28,11 +28,9 @@ import eu.chainfire.libsuperuser.Shell
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var prefs: Prefs
+    private val prefs: Prefs by lazy { Prefs.getInstance(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        prefs = Prefs.getInstance(this)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
