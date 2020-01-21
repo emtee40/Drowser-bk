@@ -1,0 +1,5 @@
+New in 0.13
+★ Add a 'drowse apps' app shortcut.
+
+New in 0.12
+★ Add night mode for Android 10 (and LineageOS 16). Thank you very much for that, @thgoebel! :)
