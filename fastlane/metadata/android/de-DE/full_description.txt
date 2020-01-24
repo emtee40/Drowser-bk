@@ -2,4 +2,4 @@ Hindere Apps daran im Hintergrund zu laufen mithilfe von Drowser.
 
 Drowser ist eine einfache App welche die ausgewählten Apps killt sobald der Bildschirm ausgeht.
 
-Dies benötigt root-Rechte und benutzt diese um Apps mit 'am force-stop <app-id>' abzuschiessen. Das ist eine '''sehr''' unhöfliche Art Apps zu stoppen. Die Apps könnten (und werden wahrscheinlich auch) dadurch Fehlverhalten zeigen. Unter Umständen kann es auch zu Datenverlust führen. '''Pass auf!'''
+Dies benötigt root-Rechte und benutzt diese um Apps mit 'am force-stop <app-id>' abzuschiessen. Das ist eine **sehr** unhöfliche Art Apps zu stoppen. Die Apps könnten (und werden wahrscheinlich auch) dadurch Fehlverhalten zeigen. Unter Umständen kann es auch zu Datenverlust führen. **Pass auf!**
