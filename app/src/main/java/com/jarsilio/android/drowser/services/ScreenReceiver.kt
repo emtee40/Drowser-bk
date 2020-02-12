@@ -6,7 +6,6 @@ import android.content.Intent
 import com.jarsilio.android.drowser.models.AppsManager
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.utils.Utils
-
 import timber.log.Timber
 
 class ScreenReceiver : BroadcastReceiver() {

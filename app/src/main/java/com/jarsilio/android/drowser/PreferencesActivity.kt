@@ -1,11 +1,11 @@
 package com.jarsilio.android.drowser
 
-import android.os.Bundle
-import android.preference.PreferenceFragment
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Bundle
+import android.preference.PreferenceFragment
 import android.provider.Settings
 import com.jarsilio.android.drowser.models.AppsManager
 import com.jarsilio.android.drowser.prefs.Prefs

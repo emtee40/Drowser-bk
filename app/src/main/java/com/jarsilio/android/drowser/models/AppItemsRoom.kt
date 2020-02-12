@@ -1,5 +1,9 @@
 package com.jarsilio.android.drowser.models
 
+import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Delete
@@ -8,16 +12,12 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import androidx.room.Query
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.Update
-import android.content.Context
-import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
-import timber.log.Timber
-import androidx.room.Room
-import androidx.lifecycle.LiveData
-import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+import timber.log.Timber
 
 @Entity
 data class AppItem(

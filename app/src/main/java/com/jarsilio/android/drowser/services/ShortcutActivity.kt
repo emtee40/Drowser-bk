@@ -7,7 +7,6 @@ import com.jarsilio.android.drowser.R
 import com.jarsilio.android.drowser.models.AppsManager
 import timber.log.Timber
 
-
 class ShortcutActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

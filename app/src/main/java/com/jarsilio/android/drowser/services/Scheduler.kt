@@ -7,9 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.PowerManager
+import androidx.core.app.JobIntentService
 import com.jarsilio.android.drowser.models.AppsManager
 import timber.log.Timber
-import androidx.core.app.JobIntentService
 
 object Scheduler {
     fun scheduleAlarm(context: Context, time: Long) {

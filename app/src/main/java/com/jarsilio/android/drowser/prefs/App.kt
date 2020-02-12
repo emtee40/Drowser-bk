@@ -4,7 +4,6 @@ import android.app.Application
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import com.squareup.leakcanary.LeakCanary
-
 import timber.log.Timber
 
 const val MAX_TAG_LENGTH = 23

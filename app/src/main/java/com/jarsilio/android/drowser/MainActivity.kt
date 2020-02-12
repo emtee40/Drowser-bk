@@ -17,7 +17,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.jarsilio.android.common.privacypolicy.PrivacyPolicyBuilder
 import com.jarsilio.android.drowser.adapters.AppItemListAdapter
-import com.jarsilio.android.drowser.models.*
+import com.jarsilio.android.drowser.models.AppDatabase
+import com.jarsilio.android.drowser.models.AppItem
+import com.jarsilio.android.drowser.models.AppItemsViewModel
+import com.jarsilio.android.drowser.models.AppsManager
+import com.jarsilio.android.drowser.models.EmptyRecyclerView
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
 import com.jarsilio.android.drowser.services.Timeout
