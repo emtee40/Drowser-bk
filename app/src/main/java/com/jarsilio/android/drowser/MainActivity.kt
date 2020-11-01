@@ -109,12 +109,12 @@ class MainActivity : AppCompatActivity() {
         requestRootAccessIfNecessaryAndStartService()
     }
 
-    fun requestRootAccessIfNecessaryAndStartService() {
+    private fun requestRootAccessIfNecessaryAndStartService() {
         if (prefs.requestRootAccess && !Shell.SU.available()) {
             Timber.e("Root access denied!")
             AlertDialog.Builder(this)
                     .setMessage(getString(R.string.root_required))
-                    .setPositiveButton(android.R.string.yes, { dialog, which -> finish() })
+                    .setPositiveButton(android.R.string.yes) { _, _ -> finish() }
                     .setCancelable(false)
                     .show()
         } else {
@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity() {
                     dialog.dismiss()
                     invalidateOptionsMenu() // force onPrepareOptionsMenu
                 }
-                .setNegativeButton(android.R.string.no) { dialog, which -> }
+                .setNegativeButton(android.R.string.no) { _, _ -> }
                 .show()
     }
 
