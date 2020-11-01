@@ -1,0 +1,18 @@
+import "../libcommon/fastlane/Fastfile"
+
+gitlab_project_id = "7562929"
+
+default_platform(:android)
+
+platform :android do
+
+  desc "Build signed apk"
+  lane :build do
+    build_flavor(flavor: "")
+  end
+
+  lane :gitlab_release do |values|# only release standard release for now
+    gitlab_release_for_project_id(project_id: gitlab_project_id, check_version: values[:check_version])
+  end
+
+end
