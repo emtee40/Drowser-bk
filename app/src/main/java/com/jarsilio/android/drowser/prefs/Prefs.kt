@@ -2,10 +2,9 @@ package com.jarsilio.android.drowser.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
-import androidx.preference.SwitchPreference
+import androidx.preference.SwitchPreferenceCompat
 import com.jarsilio.android.drowser.PreferencesActivity
 import com.jarsilio.android.drowser.R
 import com.jarsilio.android.drowser.models.SingletonHolder
@@ -60,9 +59,7 @@ class Prefs private constructor(private val context: Context) {
     private fun setBooleanPreference(key: String, value: Boolean) {
         // This changes the GUI, but it needs the PreferencesActivity to have started
         val preference = fragment?.findPreference<Preference>(key)
-        if (preference is CheckBoxPreference) {
-            preference.isChecked = value
-        } else if (preference is SwitchPreference) {
+        if (preference is SwitchPreferenceCompat) {
             preference.isChecked = value
         }
         // This doesn't change the GUI

@@ -3,11 +3,11 @@
 <PreferenceCategory
     android:key="prefs_category_service"
     android:title="@string/prefs_category_service">
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:key="@string/pref_enabled_key"
         android:title="@string/pref_enable"
         android:defaultValue="true" />
-    <CheckBoxPreference
+    <SwitchPreferenceCompat
         android:key="@string/pref_drowse_foreground_app_key"
         android:title="@string/pref_drowse_foreground_app"
         android:summary="@string/pref_drowse_foreground_app_summary"
@@ -17,7 +17,7 @@
     android:key="prefs_category_app_list"
     android:title="@string/prefs_category_app_list"
     android:dependency="@string/pref_enabled_key">
-    <CheckBoxPreference
+    <SwitchPreferenceCompat
         android:key="@string/pref_drowse_show_system_apps_key"
         android:title="@string/pref_drowse_show_system_apps"
         android:defaultValue="false" />
@@ -26,7 +26,7 @@
     android:key="prefs_category_notification"
     android:title="@string/prefs_category_notification"
     android:dependency="@string/pref_enabled_key">
-    <CheckBoxPreference
+    <SwitchPreferenceCompat
         android:key="@string/pref_notification_key"
         android:title="@string/pref_show_notification"
         android:summary="@string/pref_show_notification_summary"
