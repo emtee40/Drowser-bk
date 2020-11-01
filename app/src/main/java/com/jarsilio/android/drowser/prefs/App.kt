@@ -3,7 +3,6 @@ package com.jarsilio.android.drowser.prefs
 import android.app.Application
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
-import com.squareup.leakcanary.LeakCanary
 import timber.log.Timber
 
 const val MAX_TAG_LENGTH = 23
@@ -12,14 +11,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(LongTagTree(packageName))
-
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return
-        }
-        LeakCanary.install(this)
-
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
 
