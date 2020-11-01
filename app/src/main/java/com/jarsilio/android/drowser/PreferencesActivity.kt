@@ -5,17 +5,20 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import com.jarsilio.android.drowser.models.AppsManager
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
-import com.jarsilio.android.drowser.services.DrowserService.Companion.BATTERY_OPTIMIZATION_REQUEST_CODE
-import com.jarsilio.android.drowser.services.DrowserService.Companion.USAGE_ACCESS_REQUEST_CODE
 import timber.log.Timber
 
 class PreferencesActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var prefs: Prefs
+
+    private lateinit var batteryOptimizationActivityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var usageAccessActivityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +30,8 @@ class PreferencesActivity : AppCompatActivity(), SharedPreferences.OnSharedPrefe
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().replace(R.id.settings, SettingsFragment()).commit()
         }
+
+        registerActivityResultLaunchers()
     }
 
     override fun onResume() {
@@ -37,6 +42,23 @@ class PreferencesActivity : AppCompatActivity(), SharedPreferences.OnSharedPrefe
     override fun onPause() {
         super.onPause()
         prefs.prefs.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    private fun registerActivityResultLaunchers() {
+        batteryOptimizationActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (!DrowserService.isIgnoringBatteryOptimizations(this)) {
+                Timber.d("The user didn't accept the ignoring of the battery optimization. Forcing show_notification to true")
+                prefs.showNotification = true
+            } else {
+                DrowserService.restartService(this)
+            }
+        }
+
+        usageAccessActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (!prefs.drowseForegroundApp && !DrowserService.isUsageAccessAllowed(this)) {
+                prefs.drowseForegroundApp = true
+            }
+        }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
@@ -52,37 +74,17 @@ class PreferencesActivity : AppCompatActivity(), SharedPreferences.OnSharedPrefe
             prefs.SHOW_NOTIFICATION -> {
                 if (!prefs.showNotification && !DrowserService.isIgnoringBatteryOptimizations(this)) {
                     Timber.d("Requesting to ignore battery optimizations")
-                    startActivityForResult(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-                            Uri.parse("package:$packageName")), BATTERY_OPTIMIZATION_REQUEST_CODE)
+                    batteryOptimizationActivityResultLauncher.launch(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:$packageName")))
                 } else {
                     DrowserService.restartService(this)
                 }
             }
             prefs.DROWSE_FOREGROUND_APP -> {
                 if (!prefs.drowseForegroundApp && !DrowserService.isUsageAccessAllowed(this)) {
-                    startActivityForResult(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), USAGE_ACCESS_REQUEST_CODE)
+                    usageAccessActivityResultLauncher.launch(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
                 }
             }
             prefs.SHOW_SYSTEM_APPS -> AppsManager(this).updateAppItemsVisibility()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            BATTERY_OPTIMIZATION_REQUEST_CODE -> {
-                if (!DrowserService.isIgnoringBatteryOptimizations(this)) {
-                    Timber.d("The user didn't accept the ignoring of the battery optimization. Forcing show_notification to true")
-                    prefs.showNotification = true
-                } else {
-                    DrowserService.restartService(this)
-                }
-            }
-            USAGE_ACCESS_REQUEST_CODE -> {
-                if (!prefs.drowseForegroundApp && !DrowserService.isUsageAccessAllowed(this)) {
-                    prefs.drowseForegroundApp = true
-                }
-            }
         }
     }
 
