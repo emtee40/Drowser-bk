@@ -23,7 +23,7 @@ class AppsManager(private val context: Context) {
             @SuppressLint("WrongConstant")
             val usageStatsManager = context.getSystemService("usagestats") as UsageStatsManager
             val now = System.currentTimeMillis()
-            val usageStatsList = usageStatsManager?.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, now - 1000 * 1000, now)
+            val usageStatsList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, now - 1000 * 1000, now)
             var lastTimeUsed: Long = 0
             for (usageStats in usageStatsList) {
                 if (usageStats.lastTimeUsed > lastTimeUsed) {

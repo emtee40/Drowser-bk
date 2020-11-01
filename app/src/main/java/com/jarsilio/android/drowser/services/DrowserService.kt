@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.jarsilio.android.drowser.MainActivity
 import com.jarsilio.android.drowser.R
 import com.jarsilio.android.drowser.models.AppsManager
@@ -80,7 +81,7 @@ class DrowserService : Service() {
                 .setContentText(getString(R.string.notification_tap_to_open))
                 .setShowWhen(false)
                 .setContentIntent(notificationPendingIntent)
-                .setColor(resources.getColor(R.color.colorPrimary))
+                .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
                 .setSmallIcon(R.drawable.drowser_notification_icon_white)
                 .setOngoing(true)
                 .setContentTitle(getString(R.string.notification_drowser_running))
