@@ -1,12 +1,12 @@
 package com.jarsilio.android.drowser
 
-import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceFragment
 import android.provider.Settings
+import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceFragmentCompat
 import com.jarsilio.android.drowser.models.AppsManager
 import com.jarsilio.android.drowser.prefs.Prefs
 import com.jarsilio.android.drowser.services.DrowserService
@@ -14,25 +14,28 @@ import com.jarsilio.android.drowser.services.DrowserService.Companion.BATTERY_OP
 import com.jarsilio.android.drowser.services.DrowserService.Companion.USAGE_ACCESS_REQUEST_CODE
 import timber.log.Timber
 
-class PreferencesActivity : Activity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class PreferencesActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var prefs: Prefs
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         prefs = Prefs.getInstance(this)
+
+        setContentView(R.layout.activity_settings)
         // Display the fragment as the main content.
-        fragmentManager.beginTransaction().replace(android.R.id.content, PrefsFragment()).commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction().replace(R.id.settings, SettingsFragment()).commit()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        prefs.preferencesActivity = this
         prefs.prefs.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onPause() {
         super.onPause()
-        prefs.preferencesActivity = null // Avoid leak by not keeping a reference to PreferenceActivity in the Prefs singleton
         prefs.prefs.unregisterOnSharedPreferenceChangeListener(this)
     }
 
@@ -83,13 +86,17 @@ class PreferencesActivity : Activity(), SharedPreferences.OnSharedPreferenceChan
         }
     }
 
-    class PrefsFragment : PreferenceFragment() {
+    class SettingsFragment : PreferenceFragmentCompat() {
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
+        val prefs by lazy { Prefs.getInstance(requireContext()) }
 
-            // Load the preferences from an XML resource
-            addPreferencesFromResource(R.xml.preferences)
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            setPreferencesFromResource(R.xml.preferences, rootKey)
+        }
+
+        override fun onResume() {
+            super.onResume()
+            prefs.fragment = this
         }
     }
 }

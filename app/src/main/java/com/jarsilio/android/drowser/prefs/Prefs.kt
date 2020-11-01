@@ -2,18 +2,18 @@ package com.jarsilio.android.drowser.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.CheckBoxPreference
-import android.preference.PreferenceManager
-import android.preference.SwitchPreference
+import androidx.preference.CheckBoxPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreference
 import com.jarsilio.android.drowser.PreferencesActivity
-import com.jarsilio.android.drowser.PreferencesActivity.PrefsFragment
 import com.jarsilio.android.drowser.R
 import com.jarsilio.android.drowser.models.SingletonHolder
 import com.jarsilio.android.drowser.services.Scheduler
 
 class Prefs private constructor(private val context: Context) {
     val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-    var preferencesActivity: PreferencesActivity? = null
+    var fragment: PreferencesActivity.SettingsFragment? = null
 
     /* User prefs */
     val IS_ENABLED: String = context.getString(R.string.pref_enabled_key)
@@ -59,8 +59,7 @@ class Prefs private constructor(private val context: Context) {
 
     private fun setBooleanPreference(key: String, value: Boolean) {
         // This changes the GUI, but it needs the PreferencesActivity to have started
-        val prefsFragment = preferencesActivity?.fragmentManager?.findFragmentById(android.R.id.content) as PrefsFragment?
-        val preference = prefsFragment?.findPreference(key)
+        val preference = fragment?.findPreference<Preference>(key)
         if (preference is CheckBoxPreference) {
             preference.isChecked = value
         } else if (preference is SwitchPreference) {
