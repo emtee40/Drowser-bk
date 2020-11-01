@@ -18,8 +18,8 @@ android {
         applicationId "com.jarsilio.android.drowser"
         minSdkVersion 15
         targetSdkVersion 29
-        versionCode 15
-        versionName "0.14"
+        versionCode 16
+        versionName "0.14.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
