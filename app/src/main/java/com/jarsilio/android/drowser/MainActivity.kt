@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.jarsilio.android.common.menu.CommonMenu
 import com.jarsilio.android.common.privacypolicy.PrivacyPolicyBuilder
 import com.jarsilio.android.drowser.adapters.AppItemListAdapter
 import com.jarsilio.android.drowser.models.AppDatabase
@@ -33,6 +34,7 @@ import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     private val prefs: Prefs by lazy { Prefs.getInstance(this) }
+    private val commonMenu: CommonMenu by lazy { CommonMenu(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +77,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
+        commonMenu.addImpressumToMenu(menu)
+
         return true
     }
 
