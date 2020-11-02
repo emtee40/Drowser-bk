@@ -11,6 +11,16 @@ platform :android do
     build_flavor(flavor: "")
   end
 
+  desc "Update metadata in Google Play Store"
+  lane :update_metadata do
+    update_metadata_flavor(flavor: "")
+  end
+
+  desc "Deploy production to the Google Play Store"
+  lane :deploy do
+    deploy_flavor(flavor: "")
+  end
+
   lane :gitlab_release do |values|# only release standard release for now
     gitlab_release_for_project_id(project_id: gitlab_project_id, check_version: values[:check_version])
   end
