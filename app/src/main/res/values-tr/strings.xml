@@ -1,0 +1,86 @@
+<resources>
+    <string name="app_name">Kapatıcı</string>
+    <string name="title_activity_main">AnaEtkinlik</string>
+
+    <string name="untitled_app">İsimsiz uygulama</string>
+
+    <!-- Tab titles -->
+    <string name="title_tab_will_drowse_apps">Kapat</string>
+    <string name="title_tab_user_apps">Kullanıcı uygulamaları</string>
+    <string name="title_tab_system_apps">Sistem uygulamaları</string>
+    <string name="title_tab_all_apps">Tüm uygulamalar</string>
+
+    <string name="toast_add_drowse">%s listeye eklendi.\n\nUygulama ekran kapanır kapanmaz kapatılacaktır.</string>
+    <string name="toast_remove_drowse">%s listeden çıkarıldı.\n\nNormal bir şekilde çalışmaya başlaması için uygulamayı elle açmanız gerekebilir.</string>
+
+    <!-- Play/Pause -->
+    <string name="snackbar_disabled_until">Kapatıcı şu zamana kadar devre dışı %s</string>
+    <string name="snackbar_reenabled">Kapatıcı tekrardan etkin</string>
+    <!-- zzz -->
+    <string name="snackbar_zzz">Uygulamalar kapatılıyor...</string>
+
+    <!-- Prefs -->
+    <string name="prefs_category_service">Servis</string>
+    <string name="pref_enable">Etkin</string>
+    <string name="pref_drowse_foreground_app">Önplan uygulamalarını kapat</string>
+    <string name="pref_drowse_foreground_app_summary">Ekran kapandığında önplanda çalışan uygulamaları kapat.</string>
+
+    <string name="prefs_category_notification">Bildirimler</string>
+    <string name="pref_show_notification">Bildirimleri göster</string>
+    <string name="pref_show_notification_summary">Kapatıcı\'yı yönetmek ve onun hala çalıştığından emin olmak için kalıcı bir bildirim göster.</string>
+
+    <string name="prefs_category_app_list">Uygulama listesi filtreleri</string>
+    <string name="pref_drowse_show_system_apps">Sistem uygulamalarını göster</string>
+
+    <!-- Menu -->
+    <string name="menu_button_add">Ekle</string>
+    <string name="menu_item_settings">Ayarlar</string>
+    <string name="menu_item_privacy_policy">Gizlilik Politikası</string>
+    <string name="menu_item_licenses">Lisanslar</string>
+    <string name="menu_item_global_pause">Geçici olarak devre dışı bırak...</string>
+    <string name="menu_item_global_play">Tekrardan etkinleştir...</string>
+    <string name="menu_item_zzz">Uygulamaları şimdi kapat</string>
+
+    <!-- Add activity -->
+    <string name="title_activity_add">Uygulama ekle</string>
+
+    <!-- Excluded apps from locking -->
+    <string name="drowse_candidates_section_title">Kapatma listesi</string>
+    <string name="non_drowse_candidates_section_title">Diğer uygulamalar</string>
+    <string name="drower_candidates_empty_text">
+        Bu listedeki uygulamalar kapatılacaktır, yani ekran her kapandığında kapatılmaya zorlanacaktır.
+        \n\n<b>DİKKAT!</b> Bu uygulamarı kapatmak için çok kaba bir yöntemdir. Uygulamalar uygunsuz
+        davranabilir ve/veya veri kaybedebilirsiniz.
+        \n\nAşağıdaki uygulamalara basarak onları bu listeye ekleyebilirsiniz. Eğer fikriniz değiştiyse
+        tekrar basarak listeden kaldırabilirsiniz.
+    </string>
+
+    <string name="undo">Geri al</string>
+    <string name="added_app">%s listeye eklendi</string>
+    <string name="removed_app">%s listeden kaldırıldı</string>
+
+    <!-- Notification -->
+    <string name="notification_tap_to_open">Açmak için dokunun</string>
+    <string name="notification_drowser_running">Kapatıcı çalışıyor</string>
+    <string name="notification_persistent">Kapatıcı kalıcı bildirimi</string>
+    <string name="notification_persistent_channel_description">Bu bildirim Kapatıcı\'nın arka planda çalışmasını sağlar.</string>
+
+    <!-- Root -->
+    <string name="root_required">
+        Üzgünüz! Kapatıcı\'nın çalışması için root\'a ihtiyacı vardır.
+        \n\nCihazınızı root\'lamanız ve/veya Kapatıcı\'ya root yetkisi vermeniz gerekmektedir.
+    </string>
+
+    <!-- Pause and Timeouts -->
+    <string name="timeout_no_timeout">zaman aşımı yok</string>
+    <string name="timeout_one_minute">1 dakika</string>
+    <string name="timeout_five_minutes">5 dakika</string>
+    <string name="timeout_ten_minutes">10 dakika</string>
+    <string name="timeout_thirty_minutes">30 dakika</string>
+    <string name="timeout_one_hour">1 saat</string>
+    <string name="timeout_two_hours">2 saat</string>
+    <string name="timeout_infinity">süresiz</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_drowse_all">Uygulamarı kapat</string>
+</resources>
