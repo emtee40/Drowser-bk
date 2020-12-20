@@ -11,13 +11,13 @@ apply from: '../libcommon/artifacts.gradle'
 apply from: '../libcommon/spotless.gradle'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion '29.0.3'
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.jarsilio.android.drowser"
         minSdkVersion 15
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 18
         versionName "0.15.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
