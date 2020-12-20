@@ -1,0 +1,18 @@
+New in 0.15.2
+★ Android 11 compatibility.
+
+New in 0.15.1
+★ Add Turkish translation. Thank you, Berkay Gündüz!
+
+New in 0.15
+★ Add German legal notice.
+★ Prepare for Play Store.
+
+New in 0.14.1
+★ Minor code improvements.
+
+New in 0.14
+★ Fix service not starting on Android P+.
+
+New in 0.13
+★ Add a 'drowse apps' app shortcut.
