@@ -24,6 +24,8 @@
     <string name="pref_enable">Enabled</string>
     <string name="pref_drowse_foreground_app">Drowse foreground app</string>
     <string name="pref_drowse_foreground_app_summary">Drowse the app that is currently running in the foreground when the screen turns off.</string>
+    <string name="pref_drowse_delay">Drowse delay</string>
+    <string name="pref_drowse_delay_summary">Time to wait after screen turns off before drowsing apps. If the screen is turned back on before the timeout has expired, the apps <strong>won\'t</strong> be drowsed.\n\nCurrent value: %s.</string>
 
     <string name="prefs_category_notification">Notifications</string>
     <string name="pref_show_notification">Show notification</string>
@@ -84,6 +86,14 @@
     <string name="timeout_two_hours">2 hours</string>
     <string name="timeout_infinity">indefinitely</string>
 
+    <!-- I put this array here instead of in arrays.xml because it has to be translated. -->
+    <string-array name="drowse_delay_entries">
+        <item>No delay</item>
+        <item>1 second</item>
+        <item>5 seconds</item>
+        <item>10 seconds</item>
+    </string-array>
+
     <!-- Shortcuts -->
     <string name="shortcut_drowse_all">Drowse apps</string>
 
@@ -91,6 +101,7 @@
     <string name="pref_enabled_key" translatable="false">pref_enabled</string>
     <string name="pref_notification_key" translatable="false">pref_notification</string>
     <string name="pref_drowse_foreground_app_key" translatable="false">pref_drowse_foreground_app</string>
+    <string name="pref_drowse_delay_key" translatable="false">pref_drowse_delay</string>
     <string name="pref_drowse_show_system_apps_key" translatable="false">pref_drowse_show_system_apps_key</string>
     <!-- automagic pref id's -->
     <string name="pref_request_root_access_key" translatable="false">pref_request_root_access</string>

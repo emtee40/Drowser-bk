@@ -18,6 +18,7 @@ class Prefs private constructor(private val context: Context) {
     val IS_ENABLED: String = context.getString(R.string.pref_enabled_key)
     val SHOW_NOTIFICATION: String = context.getString(R.string.pref_notification_key)
     val DROWSE_FOREGROUND_APP: String = context.getString(R.string.pref_drowse_foreground_app_key)
+    val DROWSE_DELAY: String = context.getString(R.string.pref_drowse_delay_key)
     val SHOW_SYSTEM_APPS: String = context.getString(R.string.pref_drowse_show_system_apps_key)
 
     var isEnabled: Boolean
@@ -31,6 +32,10 @@ class Prefs private constructor(private val context: Context) {
     var drowseForegroundApp: Boolean
         get() = prefs.getBoolean(DROWSE_FOREGROUND_APP, true)
         set(value) = setBooleanPreference(DROWSE_FOREGROUND_APP, value)
+
+    var drowseDelay: Long
+        get() = prefs.getString(DROWSE_DELAY, "0")!!.toLong()
+        set(value) = prefs.edit().putString(DROWSE_DELAY, value.toString()).apply()
 
     var showSystemApps: Boolean
         get() = prefs.getBoolean(SHOW_SYSTEM_APPS, false)

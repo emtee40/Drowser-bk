@@ -9,6 +9,8 @@ import com.jarsilio.android.drowser.utils.Utils
 import timber.log.Timber
 
 class ScreenReceiver : BroadcastReceiver() {
+    var drowserThread: Thread? = null
+
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_SCREEN_OFF) {
             val prefs = Prefs.getInstance(context)
@@ -17,10 +19,27 @@ class ScreenReceiver : BroadcastReceiver() {
 
             if (prefs.disableUntil < System.currentTimeMillis()) {
                 Timber.d("Drowsing (force-stopping) candidate apps.")
-                AppsManager(context).forceStopApps()
+
+                drowserThread = Thread {
+                    if (prefs.drowseDelay > 0) {
+                        Timber.d("Going to sleep for ${prefs.drowseDelay / 1000} seconds before drowsing apps...")
+                        Thread.sleep(prefs.drowseDelay)
+                    }
+                    AppsManager(context).forceStopApps()
+                }
+                drowserThread?.start()
             } else {
                 Timber.d("Drowser temporarily disabled (until ${Utils.getReadableDate(prefs.disableUntil)}), not drowsing apps.")
             }
+        } else if (intent.action == Intent.ACTION_SCREEN_ON) {
+            Timber.d("Screen on")
+
+            if (drowserThread != null) {
+                Timber.d("Canceling app drowsing (interrupting drowser thread)")
+            }
+
+            drowserThread?.interrupt()
+            drowserThread = null
         }
     }
 }

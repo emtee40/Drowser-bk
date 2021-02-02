@@ -12,6 +12,13 @@
         android:title="@string/pref_drowse_foreground_app"
         android:summary="@string/pref_drowse_foreground_app_summary"
         android:defaultValue="true" />
+    <ListPreference
+        android:key="@string/pref_drowse_delay_key"
+        android:title="@string/pref_drowse_delay"
+        android:summary="@string/pref_drowse_delay_summary"
+        android:entries="@array/drowse_delay_entries"
+        android:entryValues="@array/drowse_delay_values"
+        android:defaultValue="1000" />
 </PreferenceCategory>
 <PreferenceCategory
     android:key="prefs_category_app_list"
