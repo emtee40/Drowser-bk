@@ -113,11 +113,10 @@ class AppsManager(private val context: Context) {
             }
 
             val name = packageManager.getApplicationLabel(applicationInfo).toString()
-            val isSystem = applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0
             val isDrowseCandidate = false
-            val show = !isSystem || prefs.showSystemApps
+            val show = true // updateAppItemsVisibility will take care of showing it or not
 
-            val appItem = AppItem(packageName, name, isSystem, isDrowseCandidate, show)
+            val appItem = AppItem(packageName, name, isDrowseCandidate, show)
             Timber.v("-> $appItem")
             appItemsDao.insertIfNotExists(appItem) // If not exists because there might be apps that expose more than one launcher
         }

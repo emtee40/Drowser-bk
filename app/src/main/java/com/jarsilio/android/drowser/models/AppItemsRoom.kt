@@ -23,7 +23,6 @@ import timber.log.Timber
 data class AppItem(
     @PrimaryKey var packageName: String,
     var name: String,
-    var isSystem: Boolean,
     var isDrowseCandidate: Boolean,
     var show: Boolean
 ) {
@@ -80,13 +79,13 @@ interface AppItemsDao : BaseDao<AppItem> {
     fun showApp(packageName: String, show: Boolean)
 }
 
-@Database(entities = [AppItem::class], version = 2)
+@Database(entities = [AppItem::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun appItemsDao(): AppItemsDao
 
     companion object : SingletonHolder<AppDatabase, Context>({
         Room.databaseBuilder(it.applicationContext, AppDatabase::class.java, "AppItems")
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .build()
     })
 }
@@ -94,5 +93,14 @@ abstract class AppDatabase : RoomDatabase() {
 val MIGRATION_1_2: Migration = object : Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("ALTER TABLE appitem ADD COLUMN show INTEGER NOT NULL DEFAULT 1")
+    }
+}
+
+val MIGRATION_2_3: Migration = object : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("CREATE TABLE tmp (packageName TEXT NOT NULL, name TEXT NOT NULL, isDrowseCandidate INTEGER NOT NULL, show INTEGER NOT NULL, PRIMARY KEY(packageName))")
+        database.execSQL("INSERT INTO tmp SELECT packageName, name, isDrowseCandidate, show FROM appitem")
+        database.execSQL("DROP TABLE appitem")
+        database.execSQL("ALTER TABLE tmp RENAME TO appitem")
     }
 }
