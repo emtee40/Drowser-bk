@@ -58,7 +58,7 @@ interface AppItemsDao : BaseDao<AppItem> {
     @get:Query("SELECT * FROM appitem ORDER BY name COLLATE UNICODE")
     val allLive: LiveData<List<AppItem>>
 
-    @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 1 ORDER BY name COLLATE UNICODE")
+    @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 1 AND show = 1 ORDER BY name COLLATE UNICODE")
     val drowseCandidates: List<AppItem>
 
     @get:Query("SELECT * FROM appitem WHERE isDrowseCandidate = 1 AND show = 1 ORDER BY name COLLATE UNICODE")
