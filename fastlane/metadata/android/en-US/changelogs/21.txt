@@ -1,0 +1,15 @@
+New in 1.0
+
+★ Dare to call it 1.0 :)
+★ Add 'Show disabled apps' option (defaults to false).
+★ Add option to delay drowsing of apps.
+
+New in 0.15.3
+
+★ Fix list of apps incomplete in Android 11.
+
+New in 0.15.2
+★ Android 11 compatibility.
+
+New in 0.15.1
+★ Add Turkish translation. Thank you, Berkay Gündüz!
