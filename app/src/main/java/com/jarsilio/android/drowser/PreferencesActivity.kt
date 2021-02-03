@@ -85,6 +85,7 @@ class PreferencesActivity : AppCompatActivity(), SharedPreferences.OnSharedPrefe
                 }
             }
             prefs.SHOW_SYSTEM_APPS -> AppsManager(this).updateAppItemsVisibility()
+            prefs.SHOW_DISABLED_APPS -> AppsManager(this).updateAppItemsVisibility()
         }
     }
 

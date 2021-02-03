@@ -17,7 +17,7 @@
     <string name="snackbar_disabled_until">Disabled Drowser until %s</string>
     <string name="snackbar_reenabled">Re-enabled Drowser</string>
     <!-- zzz -->
-    <string name="snackbar_zzz">Drowsing apps...</string>
+    <string name="snackbar_zzz">Drowsing apps…</string>
 
     <!-- Prefs -->
     <string name="prefs_category_service">Service</string>
@@ -33,14 +33,15 @@
 
     <string name="prefs_category_app_list">App list filters</string>
     <string name="pref_drowse_show_system_apps">Show system apps</string>
+    <string name="pref_drowse_show_disabled_apps">Show disabled apps</string>
 
     <!-- Menu -->
     <string name="menu_button_add">Add</string>
     <string name="menu_item_settings">Settings</string>
     <string name="menu_item_privacy_policy">Privacy Policy</string>
     <string name="menu_item_licenses">Licenses</string>
-    <string name="menu_item_global_pause">Temporarily Disable...</string>
-    <string name="menu_item_global_play">Re-enable...</string>
+    <string name="menu_item_global_pause">Temporarily Disable…</string>
+    <string name="menu_item_global_play">Re-enable…</string>
     <string name="menu_item_zzz">Drowse apps now</string>
 
     <!-- Licenses Activity -->
@@ -103,6 +104,7 @@
     <string name="pref_drowse_foreground_app_key" translatable="false">pref_drowse_foreground_app</string>
     <string name="pref_drowse_delay_key" translatable="false">pref_drowse_delay</string>
     <string name="pref_drowse_show_system_apps_key" translatable="false">pref_drowse_show_system_apps_key</string>
+    <string name="pref_drowse_show_disabled_apps_key" translatable="false">pref_drowse_show_disabled_apps_key</string>
     <!-- automagic pref id's -->
     <string name="pref_request_root_access_key" translatable="false">pref_request_root_access</string>
     <string name="pref_disable_until_key" translatable="false">pref_disable_until</string>

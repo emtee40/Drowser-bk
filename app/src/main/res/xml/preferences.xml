@@ -28,6 +28,10 @@
         android:key="@string/pref_drowse_show_system_apps_key"
         android:title="@string/pref_drowse_show_system_apps"
         android:defaultValue="false" />
+    <SwitchPreferenceCompat
+        android:key="@string/pref_drowse_show_disabled_apps_key"
+        android:title="@string/pref_drowse_show_disabled_apps"
+        android:defaultValue="false" />
 </PreferenceCategory>
 <PreferenceCategory
     android:key="prefs_category_notification"

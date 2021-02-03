@@ -125,9 +125,11 @@ class AppsManager(private val context: Context) {
     fun updateAppItemsVisibility() {
         Thread {
             for (appItem in appItemsDao.all) {
-                if (isSystemApp(appItem)) {
-                    appItemsDao.showApp(appItem.packageName, prefs.showSystemApps)
-                }
+                val hideBecauseSystemApp = isSystemApp(appItem) && !prefs.showSystemApps
+                val hideBecauseDisabledApp = !isAppEnabled(appItem) && !prefs.showDisabledApps
+
+                val show = !hideBecauseSystemApp && !hideBecauseDisabledApp
+                appItemsDao.showApp(appItem.packageName, show)
             }
         }.start()
     }
@@ -156,6 +158,14 @@ class AppsManager(private val context: Context) {
             true
         } catch (e: PackageManager.NameNotFoundException) {
             false
+        }
+    }
+
+    private fun isAppEnabled(appItem: AppItem): Boolean {
+        return try {
+            context.packageManager.getApplicationInfo(appItem.packageName, 0).enabled
+        } catch (e: PackageManager.NameNotFoundException) {
+            true
         }
     }
 }
