@@ -83,7 +83,7 @@ interface AppItemsDao : BaseDao<AppItem> {
     fun hideSystemApps()
 }
 
-@Database(entities = arrayOf(AppItem::class), version = 2)
+@Database(entities = [AppItem::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun appItemsDao(): AppItemsDao
 
