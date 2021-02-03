@@ -124,13 +124,13 @@ class AppsManager(private val context: Context) {
     }
 
     fun updateAppItemsVisibility() {
-        Thread(Runnable {
-            if (prefs.showSystemApps) {
-                appItemsDao.showSystemApps()
-            } else {
-                appItemsDao.hideSystemApps()
+        Thread {
+            for (appItem in appItemsDao.all) {
+                if (isSystemApp(appItem)) {
+                    appItemsDao.showApp(appItem.packageName, prefs.showSystemApps)
+                }
             }
-        }).start()
+        }.start()
     }
 
     private fun removeObsoleteAppItemsFromDatabase() {
@@ -140,6 +140,14 @@ class AppsManager(private val context: Context) {
                 Timber.v("-> $appItem")
                 appItemsDao.delete(appItem)
             }
+        }
+    }
+
+    private fun isSystemApp(appItem: AppItem): Boolean {
+        return try {
+            context.packageManager.getApplicationInfo(appItem.packageName, 0).flags and ApplicationInfo.FLAG_SYSTEM != 0
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
         }
     }
 

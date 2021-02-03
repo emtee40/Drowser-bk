@@ -76,11 +76,8 @@ interface AppItemsDao : BaseDao<AppItem> {
     @Query("UPDATE AppItem SET isDrowseCandidate = :isDrowseCandidate WHERE packageName = :packageName")
     fun setDrowseCandidate(packageName: String, isDrowseCandidate: Boolean)
 
-    @Query("UPDATE AppItem SET show = 1 WHERE isSystem = 1")
-    fun showSystemApps()
-
-    @Query("UPDATE AppItem SET show = 0 WHERE isSystem = 1")
-    fun hideSystemApps()
+    @Query("UPDATE AppItem SET show = :show WHERE packageName = :packageName")
+    fun showApp(packageName: String, show: Boolean)
 }
 
 @Database(entities = [AppItem::class], version = 2)
