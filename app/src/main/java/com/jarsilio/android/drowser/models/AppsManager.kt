@@ -73,23 +73,6 @@ class AppsManager(private val context: Context) {
         }).start()
     }
 
-    fun getActiveServices(packageName: String): List<String> {
-        val activeServices: MutableList<String> = mutableListOf()
-        val dumpsysServicesOutput = Shell.SU.run("dumpsys activity services $packageName")
-        for (line in dumpsysServicesOutput) {
-            if (line.matches(SERVICE_RECORD_MATCH)) {
-                val service = line.replace(SERVICE_RECORD_MATCH, "$1")
-                Timber.d("Service: $service")
-                activeServices.add(service)
-            }
-        }
-        return activeServices.toList()
-    }
-
-    fun getActiveServicesForAllApps(): List<String> {
-        return getActiveServices("")
-    }
-
     fun updateAppItemsDatabase() {
         Thread(Runnable {
             addNewAppItemsToDatabase()
