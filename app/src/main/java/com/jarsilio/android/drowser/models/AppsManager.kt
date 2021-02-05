@@ -76,6 +76,7 @@ class AppsManager(private val context: Context) {
     fun updateAppItemsDatabase() {
         Thread(Runnable {
             addNewAppItemsToDatabase()
+            updateAppItemsVisibility()
             removeObsoleteAppItemsFromDatabase()
         }).start()
     }
@@ -110,8 +111,9 @@ class AppsManager(private val context: Context) {
             for (appItem in appItemsDao.all) {
                 val hideBecauseSystemApp = isSystemApp(appItem) && !prefs.showSystemApps
                 val hideBecauseDisabledApp = !isAppEnabled(appItem) && !prefs.showDisabledApps
+                val hideBecauseNotInstalled = !isAppInstalled(appItem)
 
-                val show = !hideBecauseSystemApp && !hideBecauseDisabledApp
+                val show = !hideBecauseSystemApp && !hideBecauseDisabledApp && !hideBecauseNotInstalled
                 appItemsDao.showApp(appItem.packageName, show)
             }
         }.start()
@@ -122,7 +124,11 @@ class AppsManager(private val context: Context) {
         for (appItem in appItemsDao.all) {
             if (!isAppInstalled(appItem)) {
                 Timber.v("-> $appItem")
-                appItemsDao.delete(appItem)
+                if (appItem.isDrowseCandidate) {
+                    Timber.d("    Not removing $appItem from database because it is a drowse candidate")
+                } else {
+                    appItemsDao.delete(appItem)
+                }
             }
         }
     }
