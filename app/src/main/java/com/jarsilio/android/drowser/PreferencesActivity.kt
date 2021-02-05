@@ -30,6 +30,7 @@ class PreferencesActivity : AppCompatActivity(), SharedPreferences.OnSharedPrefe
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().replace(R.id.settings, SettingsFragment()).commit()
         }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         registerActivityResultLaunchers()
     }

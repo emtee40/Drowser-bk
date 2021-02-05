@@ -33,7 +33,8 @@
         </activity>
         <activity
             android:name=".PreferencesActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/menu_item_settings"
+            android:parentActivityName=".MainActivity">
         </activity>
         <activity
             android:name=".services.ShortcutActivity"
