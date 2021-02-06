@@ -41,11 +41,11 @@ dependencies {
     implementation project(path: ':common')
     implementation "com.mikepenz:aboutlibraries:6.1.1"
     // Chainfire's libsuperuser
-    implementation 'eu.chainfire:libsuperuser:1.0.0.201704021214'
+    implementation 'eu.chainfire:libsuperuser:1.1.0.202004101746'
     // Room persistance
     implementation 'androidx.room:room-runtime:2.2.6'
     annotationProcessor 'androidx.room:room-compiler:2.2.6'
     kapt 'androidx.room:room-compiler:2.2.6'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 }
