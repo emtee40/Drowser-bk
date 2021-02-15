@@ -23,7 +23,12 @@ class ScreenReceiver : BroadcastReceiver() {
                 drowserThread = Thread {
                     if (prefs.drowseDelay > 0) {
                         Timber.d("Going to sleep for ${prefs.drowseDelay / 1000} seconds before drowsing apps...")
-                        Thread.sleep(prefs.drowseDelay)
+                        try {
+                            Thread.sleep(prefs.drowseDelay)
+                        } catch (e: InterruptedException) {
+                            Timber.d("drowserThread (Thread.sleep) interrupted. Hopefully because we interrupted it ourselves.")
+                            return@Thread
+                        }
                     }
                     AppsManager(context).forceStopApps()
                 }
