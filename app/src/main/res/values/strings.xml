@@ -76,7 +76,11 @@
         Sorry! Drowser needs root in order to run.
         \n\nYou need to root your device and/or grant root permissions to Drowser.
     </string>
-
+    <!-- No root notification -->
+    <string name="root_required_notification_title">No root detected</string>
+    <string name="root_required_notification_description">Sorry! Drowser needs root in order to run.</string>
+    <string name="root_required_notification_channel_name">Root required notification</string>
+    <string name="root_required_notification_channel_description">Channel to notify when root is not enabled.</string>
     <!-- Pause and Timeouts -->
     <string name="timeout_no_timeout">no timeout</string>
     <string name="timeout_one_minute">1 minute</string>

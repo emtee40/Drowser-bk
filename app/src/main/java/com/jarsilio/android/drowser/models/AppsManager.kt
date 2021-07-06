@@ -8,7 +8,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import com.jarsilio.android.drowser.prefs.Prefs
-import com.jarsilio.android.drowser.services.DrowserService
+import com.jarsilio.android.drowser.utils.NotificationHandler
 import eu.chainfire.libsuperuser.Shell
 import timber.log.Timber
 
@@ -41,11 +41,15 @@ class AppsManager(private val context: Context) {
 
     fun forceStopApps() {
         if (!Shell.SU.available()) {
-            Timber.e("Root access not granted (or device nor rooted). Stopping DrowserService until root access is granted. Will request root access once the user opens the app again.")
+            Timber.e("Root access not granted (or device nor rooted). Won't drowse any apps until root access is granted. Will request root access once the user opens the app again.")
+            NotificationHandler.showNoRootNotification(context)
+
             prefs.requestRootAccess = true
-            DrowserService.stopService(context)
+            // DrowserService.stopService(context) // Not sstopping service anymore so that we can continue to show the notification if root isn't available.
+
             return
         }
+        NotificationHandler.dismissNoRootNotification(context)
 
         Timber.d("Force-stopping all candidate apps")
         val commands: MutableList<String> = mutableListOf()
