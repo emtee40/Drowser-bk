@@ -1,0 +1,15 @@
+New in 1.0.2
+
+★ Upgrade a bunch of dependencies.
+
+New in 1.0.1
+
+★ Fix bug in new delay drowsing of apps option.
+★ Remember uninstalled apps (only if they were drowse candidates) so that they can appear in the list again if the app is reinstalled.
+★ Upgrade some dependencies.
+
+New in 1.0
+
+★ Dare to call it 1.0 :)
+★ Add 'Show disabled apps' option (defaults to false).
+★ Add option to delay drowsing of apps.
