@@ -16,7 +16,7 @@ buildscript {
 }
 
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.27.1"
+    id "com.diffplug.spotless" version "5.14.3"
 }
 
 allprojects {
