@@ -36,17 +36,19 @@ class TileService : TileService() {
         super.onStartListening()
         unclicked = true
         Timber.d("Tile became visible. Starting thread to periodically update qsTile")
-        updateTileThread = Thread(Runnable {
-            try {
-                Timber.v("Updating tile from thread")
-                while (true) {
-                    updateTile()
-                    Thread.sleep(1000)
+        updateTileThread = Thread(
+            Runnable {
+                try {
+                    Timber.v("Updating tile from thread")
+                    while (true) {
+                        updateTile()
+                        Thread.sleep(1000)
+                    }
+                } catch (e: InterruptedException) {
+                    Timber.d("updateTileThread interrupted")
                 }
-            } catch (e: InterruptedException) {
-                Timber.d("updateTileThread interrupted")
             }
-        })
+        )
         updateTileThread?.start()
     }
 

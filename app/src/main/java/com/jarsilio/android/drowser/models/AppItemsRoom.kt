@@ -85,8 +85,8 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object : SingletonHolder<AppDatabase, Context>({
         Room.databaseBuilder(it.applicationContext, AppDatabase::class.java, "AppItems")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
-                .build()
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+            .build()
     })
 }
 

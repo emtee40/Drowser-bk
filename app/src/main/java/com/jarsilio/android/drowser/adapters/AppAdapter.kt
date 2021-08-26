@@ -48,9 +48,11 @@ class AppItemHolder(view: View) : RecyclerView.ViewHolder(view) {
     }
 
     private fun toggleIsDrowseCandidate(view: View, appItem: AppItem) {
-        Thread(Runnable {
-            dao.setDrowseCandidate(appItem.packageName, !appItem.isDrowseCandidate)
-        }).start()
+        Thread(
+            Runnable {
+                dao.setDrowseCandidate(appItem.packageName, !appItem.isDrowseCandidate)
+            }
+        ).start()
 
         val snackBarMessage: String
         val debugMessage: String
@@ -69,12 +71,14 @@ class AppItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         Timber.d(debugMessage)
 
         Snackbar.make(view, snackBarMessage, Snackbar.LENGTH_LONG)
-                .setAction(R.string.undo) {
-                    Timber.d(undoDebugMessage)
-                    Thread(Runnable {
+            .setAction(R.string.undo) {
+                Timber.d(undoDebugMessage)
+                Thread(
+                    Runnable {
                         dao.setDrowseCandidate(appItem.packageName, appItem.isDrowseCandidate)
-                    }).start()
-                }.show()
+                    }
+                ).start()
+            }.show()
     }
 }
 

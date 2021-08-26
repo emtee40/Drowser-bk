@@ -59,15 +59,17 @@ class MainActivity : AppCompatActivity() {
         val appItemsDao = AppDatabase.getInstance(this).appItemsDao()
         val viewModel = ViewModelProvider(this).get(AppItemsViewModel::class.java)
         viewModel.getDrowseCandidates(appItemsDao)
-                .observe(this,
-                        Observer<List<AppItem>> { list ->
-                            drowseCandidatesListAdapter.submitList(list)
-                        }
-                )
-        viewModel.getNonDrowseCandidates(appItemsDao).observe(this,
+            .observe(
+                this,
                 Observer<List<AppItem>> { list ->
-                    nonDrowseCandidatesListAdapter.submitList(list)
+                    drowseCandidatesListAdapter.submitList(list)
                 }
+            )
+        viewModel.getNonDrowseCandidates(appItemsDao).observe(
+            this,
+            Observer<List<AppItem>> { list ->
+                nonDrowseCandidatesListAdapter.submitList(list)
+            }
         )
 
         // This enables inertia while scrolling
@@ -117,10 +119,10 @@ class MainActivity : AppCompatActivity() {
         if (prefs.requestRootAccess && !Shell.SU.available()) {
             Timber.e("Root access denied!")
             AlertDialog.Builder(this)
-                    .setMessage(getString(R.string.root_required))
-                    .setPositiveButton(android.R.string.yes) { _, _ -> finish() }
-                    .setCancelable(false)
-                    .show()
+                .setMessage(getString(R.string.root_required))
+                .setPositiveButton(android.R.string.yes) { _, _ -> finish() }
+                .setCancelable(false)
+                .show()
         } else {
             AppsManager(this).updateAppItemsDatabase()
             prefs.requestRootAccess = false
@@ -130,11 +132,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun showPrivacyPolicyActivity() {
         val privacyPolicyBuilder = PrivacyPolicyBuilder()
-                .withIntro(getString(R.string.app_name), "Juan García Basilio (juanitobananas)")
-                .withUrl("https://gitlab.com/juanitobananas/drowser/blob/master/PRIVACY.md#drowser-privacy-policy")
-                .withMeSection()
-                .withEmailSection("juam+drowser@posteo.net")
-                .withAutoGoogleOrFDroidSection()
+            .withIntro(getString(R.string.app_name), "Juan García Basilio (juanitobananas)")
+            .withUrl("https://gitlab.com/juanitobananas/drowser/blob/master/PRIVACY.md#drowser-privacy-policy")
+            .withMeSection()
+            .withEmailSection("juam+drowser@posteo.net")
+            .withAutoGoogleOrFDroidSection()
         privacyPolicyBuilder.start(this)
     }
 
@@ -149,48 +151,54 @@ class MainActivity : AppCompatActivity() {
         }
 
         LibsBuilder()
-                .withActivityStyle(style)
-                .withActivityTheme(theme)
-                .withAboutIconShown(true)
-                .withAboutVersionShown(true)
-                .withActivityTitle(getString(R.string.menu_item_licenses))
-                .withAboutDescription(getString(R.string.licenses_about_libraries_text, getString(R.string.app_name)))
-                .start(applicationContext)
+            .withActivityStyle(style)
+            .withActivityTheme(theme)
+            .withAboutIconShown(true)
+            .withAboutVersionShown(true)
+            .withActivityTitle(getString(R.string.menu_item_licenses))
+            .withAboutDescription(getString(R.string.licenses_about_libraries_text, getString(R.string.app_name)))
+            .start(applicationContext)
     }
 
     private fun showDisableUntilDialog() {
         val timeoutStrings = Timeout.getStringsForChoiceDialog(this)
         AlertDialog.Builder(this)
-                .setTitle("Disable drowsing apps for")
-                .setSingleChoiceItems(timeoutStrings, prefs.lastDisableUntilUserChoice) { dialog, which ->
-                    prefs.lastDisableUntilUserChoice = which
-                    prefs.disableUntil = Timeout.values()[which + 1].disableUntil // To skip NO_TIMEOUT
-                    Timber.d("Temporarily disabling Drowser until ${Utils.getReadableDate(prefs.disableUntil)}")
-                    Snackbar.make(findViewById<View>(R.id.main_content),
-                            getString(R.string.snackbar_disabled_until, Utils.getReadableTime(prefs.disableUntil)),
-                            Snackbar.LENGTH_LONG).show()
-                    dialog.dismiss()
-                    invalidateOptionsMenu() // force onPrepareOptionsMenu
-                }
-                .setNegativeButton(android.R.string.no) { _, _ -> }
-                .show()
+            .setTitle("Disable drowsing apps for")
+            .setSingleChoiceItems(timeoutStrings, prefs.lastDisableUntilUserChoice) { dialog, which ->
+                prefs.lastDisableUntilUserChoice = which
+                prefs.disableUntil = Timeout.values()[which + 1].disableUntil // To skip NO_TIMEOUT
+                Timber.d("Temporarily disabling Drowser until ${Utils.getReadableDate(prefs.disableUntil)}")
+                Snackbar.make(
+                    findViewById<View>(R.id.main_content),
+                    getString(R.string.snackbar_disabled_until, Utils.getReadableTime(prefs.disableUntil)),
+                    Snackbar.LENGTH_LONG
+                ).show()
+                dialog.dismiss()
+                invalidateOptionsMenu() // force onPrepareOptionsMenu
+            }
+            .setNegativeButton(android.R.string.no) { _, _ -> }
+            .show()
     }
 
     private fun reEnable() {
         prefs.disableUntil = 0
         invalidateOptionsMenu() // force onPrepareOptionsMenu
-        Snackbar.make(findViewById<View>(R.id.main_content),
-                getString(R.string.snackbar_reenabled),
-                Snackbar.LENGTH_LONG).show()
+        Snackbar.make(
+            findViewById<View>(R.id.main_content),
+            getString(R.string.snackbar_reenabled),
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
     private fun drowseNow() {
-        val snackbar = Snackbar.make(findViewById<View>(R.id.main_content),
-                getString(R.string.snackbar_zzz),
-                Snackbar.LENGTH_LONG)
-                .setAction(R.string.undo) {
-                    Timber.d("User canceled 'zzz'. Not drowsing apps...")
-                }
+        val snackbar = Snackbar.make(
+            findViewById<View>(R.id.main_content),
+            getString(R.string.snackbar_zzz),
+            Snackbar.LENGTH_LONG
+        )
+            .setAction(R.string.undo) {
+                Timber.d("User canceled 'zzz'. Not drowsing apps...")
+            }
         snackbar.addCallback(object : Snackbar.Callback() {
             override fun onDismissed(snackbar: Snackbar?, event: Int) {
                 if (event == DISMISS_EVENT_ACTION) {

@@ -19,7 +19,8 @@ object Utils {
 
     fun getTimeoutUntil(epochMilliseconds: Long): String {
         val timeoutInMilliseconds = epochMilliseconds - System.currentTimeMillis()
-        return String.format("%d:%02d",
+        return String.format(
+            "%d:%02d",
             TimeUnit.MILLISECONDS.toMinutes(timeoutInMilliseconds),
             TimeUnit.MILLISECONDS.toSeconds(timeoutInMilliseconds) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeoutInMilliseconds))
         )

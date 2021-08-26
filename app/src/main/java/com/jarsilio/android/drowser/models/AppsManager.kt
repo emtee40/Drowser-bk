@@ -51,34 +51,38 @@ class AppsManager(private val context: Context) {
         val commands: MutableList<String> = mutableListOf()
         val appItemsDao = AppDatabase.getInstance(context).appItemsDao()
 
-        Thread(Runnable {
-            Timber.v("Preparing shell commands:")
-            val foregroundApp = getForegroundPackageName()
-            if (!prefs.drowseForegroundApp) {
-                Timber.d("App running in foreground: $foregroundApp")
-            }
-            for (appItem in appItemsDao.drowseCandidates) { // in separate thread because of database access
-                if (!prefs.drowseForegroundApp && appItem.packageName == foregroundApp) {
-                    Timber.d("-> Not force-stopping $foregroundApp because 'Stop foreground app' option is disabled.")
-                    continue
+        Thread(
+            Runnable {
+                Timber.v("Preparing shell commands:")
+                val foregroundApp = getForegroundPackageName()
+                if (!prefs.drowseForegroundApp) {
+                    Timber.d("App running in foreground: $foregroundApp")
                 }
-                val command = "am force-stop ${appItem.packageName}"
-                commands.add(command)
-                Timber.v("-> $command")
-            }
+                for (appItem in appItemsDao.drowseCandidates) { // in separate thread because of database access
+                    if (!prefs.drowseForegroundApp && appItem.packageName == foregroundApp) {
+                        Timber.d("-> Not force-stopping $foregroundApp because 'Stop foreground app' option is disabled.")
+                        continue
+                    }
+                    val command = "am force-stop ${appItem.packageName}"
+                    commands.add(command)
+                    Timber.v("-> $command")
+                }
 
-            Timber.d("Running shell commands as root")
-            Shell.SU.run(commands)
-            Timber.d("Done")
-        }).start()
+                Timber.d("Running shell commands as root")
+                Shell.SU.run(commands)
+                Timber.d("Done")
+            }
+        ).start()
     }
 
     fun updateAppItemsDatabase() {
-        Thread(Runnable {
-            addNewAppItemsToDatabase()
-            updateAppItemsVisibility()
-            removeObsoleteAppItemsFromDatabase()
-        }).start()
+        Thread(
+            Runnable {
+                addNewAppItemsToDatabase()
+                updateAppItemsVisibility()
+                removeObsoleteAppItemsFromDatabase()
+            }
+        ).start()
     }
 
     private fun addNewAppItemsToDatabase() {

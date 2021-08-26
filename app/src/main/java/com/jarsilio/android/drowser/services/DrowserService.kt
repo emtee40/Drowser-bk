@@ -78,14 +78,14 @@ class DrowserService : Service() {
         val notificationPendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
 
         val notificationBuilder = NotificationCompat.Builder(this, "persistent")
-                .setContentText(getString(R.string.notification_tap_to_open))
-                .setShowWhen(false)
-                .setContentIntent(notificationPendingIntent)
-                .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .setSmallIcon(R.drawable.drowser_notification_icon_white)
-                .setOngoing(true)
-                .setContentTitle(getString(R.string.notification_drowser_running))
-                .setTicker(getString(R.string.notification_drowser_running))
+            .setContentText(getString(R.string.notification_tap_to_open))
+            .setShowWhen(false)
+            .setContentIntent(notificationPendingIntent)
+            .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            .setSmallIcon(R.drawable.drowser_notification_icon_white)
+            .setOngoing(true)
+            .setContentTitle(getString(R.string.notification_drowser_running))
+            .setTicker(getString(R.string.notification_drowser_running))
 
         val drowseIntent = Intent(this, DrowserService::class.java)
         drowseIntent.action = DROWSE_ACTION
@@ -116,7 +116,8 @@ class DrowserService : Service() {
             if (prefs.isEnabled) {
                 Timber.i("Starting Drowser")
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-                    shouldStartForegroundService(context)) {
+                    shouldStartForegroundService(context)
+                ) {
                     Timber.d("Starting service with context.startForegroundService (Android >= Oreo and battery optimization on)")
                     context.startForegroundService(Intent(context, DrowserService::class.java))
                 } else {
@@ -157,9 +158,9 @@ class DrowserService : Service() {
                     val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
                     val mode: Int
                     mode = appOpsManager?.checkOpNoThrow(
-                            AppOpsManager.OPSTR_GET_USAGE_STATS,
-                            applicationInfo.uid,
-                            applicationInfo.packageName
+                        AppOpsManager.OPSTR_GET_USAGE_STATS,
+                        applicationInfo.uid,
+                        applicationInfo.packageName
                     )
                     return mode == AppOpsManager.MODE_ALLOWED
                 } catch (e: PackageManager.NameNotFoundException) {
