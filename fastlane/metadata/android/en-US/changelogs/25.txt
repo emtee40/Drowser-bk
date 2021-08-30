@@ -1,0 +1,13 @@
+New in 1.0.3
+
+★ Show notification if root is not granted.
+
+New in 1.0.2
+
+★ Upgrade a bunch of dependencies.
+
+New in 1.0.1
+
+★ Fix bug in new delay drowsing of apps option.
+★ Remember uninstalled apps (only if they were drowse candidates) so that they can appear in the list again if the app is reinstalled.
+★ Upgrade some dependencies.
