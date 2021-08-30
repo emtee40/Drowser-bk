@@ -130,6 +130,7 @@ class DrowserService : Service() {
         }
 
         fun stopService(context: Context) {
+            Timber.i("Stopping Drowser")
             context.stopService(Intent(context, DrowserService::class.java))
         }
 
