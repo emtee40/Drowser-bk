@@ -75,7 +75,7 @@ class DrowserService : Service() {
 
         val notificationIntent = Intent(this, MainActivity::class.java)
         notificationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        val notificationPendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+        val notificationPendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
 
         val notificationBuilder = NotificationCompat.Builder(this, "persistent")
             .setContentText(getString(R.string.notification_tap_to_open))
@@ -89,7 +89,7 @@ class DrowserService : Service() {
 
         val drowseIntent = Intent(this, DrowserService::class.java)
         drowseIntent.action = DROWSE_ACTION
-        val drowsePendingIntent = PendingIntent.getService(this, 0, drowseIntent, 0)
+        val drowsePendingIntent = PendingIntent.getService(this, 0, drowseIntent, PendingIntent.FLAG_IMMUTABLE)
 
         notificationBuilder.addAction(0, getString(R.string.menu_item_zzz), drowsePendingIntent)
 
